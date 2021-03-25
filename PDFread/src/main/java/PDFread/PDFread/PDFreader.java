@@ -2,6 +2,7 @@
 // Modification: 3/21/2021 - alpha
 // REF: https://www.tutorialspoint.com/pdfbox/pdfbox_quick_guide.htm
 // REF: https://pdfbox.apache.org/docs/2.0.11/javadocs/org/apache/pdfbox/text/PDFTextStripper.html
+// REF: https://pdfbox.apache.org/docs/2.0.11/javadocs/org/apache/pdfbox/pdmodel/PDPageTree.html
 ///////////////////////////////
 // 3/20/2021
 // TODO: 
@@ -27,14 +28,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 public class PDFreader {
 	
 	// Private members:
-	private String pdfContent;
-	private String pdfContent_W;
+	private String pdfContent; //PDF file with whitespace as a string
+	private String pdfContent_W; //PDF file without whitespace as a string
+	private PDDocument document; //PDF file
 	
 	// Public members:
 	public Vector<String> D22Spec =new Vector<String>(); //Holds s
@@ -49,17 +52,19 @@ public class PDFreader {
 			URL url = new URL(PDFpath);
 			InputStream is = url.openStream();
 			BufferedInputStream fileParse = new BufferedInputStream(is);
-			PDDocument document = null;
+			document = null;
 			document = PDDocument.load(fileParse);
 			// Create our two String PDF's using setter method
 			setPdfContent(new PDFTextStripper().getText(document));
 			setPdfContent_W(pdfContent.replaceAll(" ", ""));
 			
+
+			
 		}
 		// Condition for file path:
 		else {
 			File file = new File(PDFpath);
-			PDDocument document = null;
+			document = null;
 			document = PDDocument.load(file);
 			// Create our two String PDF's using setter method
 			setPdfContent(new PDFTextStripper().getText(document));
@@ -67,24 +72,22 @@ public class PDFreader {
 		}
 	}
 	
-
-
+	// Method that finds page numbers of spec sections
+	public void pageFinder() {
+		System.out.print(document.getNumberOfPages());
+//		for(int i = 1; i < document.getNumberOfPages(); i++) {
+//			PDPageTree doc1 = new PDPageTree();
+//			doc1.add(document.getPage(i));
+//			System.out.print(document.getPage(i));
+//		}
+		
+	}
+	
+	
+	// The below method can be modified to accommodate all other divisions at a later date.
+	// Method that checks if specifications contain Division 22
 	public void checkSpecs() throws IOException {
-		//
-		URL url = new URL("http://www.pavilionconstruction.com/uploaded-files/Platinum%20Place/Drawings%206.4.14/2014%2005%2016%20Project%20Manual%20INCOMPLETE.pdf");
-		
-		InputStream is = url.openStream();
-		BufferedInputStream fileParse = new BufferedInputStream(is);
-		PDDocument document = null;
-		
-		document = PDDocument.load(fileParse);
-		String pdfContent = new PDFTextStripper().getText(document);
-//		pdfContent.replaceAll(" ","");
-//		System.out.println(pdfContent.replaceAll(" ",""));
-		String pdfContent_W = pdfContent.replaceAll(" ","");
-
-		// Check for Division 22's existence, then check for all subsections
-		Vector<String> D22Spec =new Vector<String>();
+	
 		if(pdfContent.contains("DIVISION 22") || pdfContent.contains("division 22")) {
 			
 			String test = "", test1 = "", test2 = "";
@@ -199,6 +202,8 @@ public class PDFreader {
 		D22Spec.add(specNum);
 	}
 
+	
+	
 	// Getter method
 	public String getPdfContent() {
 		return pdfContent;
