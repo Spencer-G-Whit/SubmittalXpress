@@ -28,19 +28,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
-import org.apache.pdfbox.pdmodel.PDPageTree;
+//import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+
 
 public class PDFreader {
 	
 	// Private members:
+	PDFTextStripper pdf = new PDFTextStripper();
 	private String pdfContent; //PDF file with whitespace as a string
 	private String pdfContent_W; //PDF file without whitespace as a string
 	private PDDocument document; //PDF file
 	
 	// Public members:
 	public Vector<String> D22Spec =new Vector<String>(); //Holds s
+	public Vector<String> pageVec =new Vector<String>(); //Holds page numbers of spec sections stored in D22Spec
 	
 	
 	// String Constructor:
@@ -55,8 +58,10 @@ public class PDFreader {
 			document = null;
 			document = PDDocument.load(fileParse);
 			// Create our two String PDF's using setter method
+			// 
 			setPdfContent(new PDFTextStripper().getText(document));
-			setPdfContent_W(pdfContent.replaceAll(" ", ""));
+			//setPdfContent_W(pdfContent.replaceAll(" ", ""));
+			pdfContent_W = pdfContent.replaceAll(" ", "");
 			
 
 			
@@ -68,117 +73,137 @@ public class PDFreader {
 			document = PDDocument.load(file);
 			// Create our two String PDF's using setter method
 			setPdfContent(new PDFTextStripper().getText(document));
-			setPdfContent_W(pdfContent.replaceAll(" ", ""));
+			//setPdfContent_W(pdfContent.replaceAll(" ", ""));
+			pdfContent_W = pdfContent.replaceAll(" ", "");
 		}
 	}
 	
 	// Method that finds page numbers of spec sections
-	public void pageFinder() {
-		System.out.print(document.getNumberOfPages());
-//		for(int i = 1; i < document.getNumberOfPages(); i++) {
-//			PDPageTree doc1 = new PDPageTree();
-//			doc1.add(document.getPage(i));
-//			System.out.print(document.getPage(i));
-//		}
+	public void pageFinder(int pageNumber, String temp) throws IOException {
 		
+		//pdfContent_W = pdfContent_W.replaceAll(" ", "");
+		// take the passed in string and iterate by 1
+		// Manipulate strings for searching conditions
+		// if the conditional statement finds the a new section, then stop and return to checkSpecs()
+		//int tempInt = Integer.parseInt(temp)+1;
+		//String intStr = String.valueOf(tempInt);
+		String tempStr = "endofsection";
+		String tempStr1 = "ENDOFSECTION";
+		//pageNumber = pageNumber + 57;
+		pdf.setStartPage(pageNumber);
+		pdf.setEndPage(pageNumber);
+		pdfContent_W = pdf.getText(document);
+		pdfContent_W = pdfContent_W.replaceAll(" ", "");
+		pdfContent_W = pdfContent_W.toLowerCase();
+		// check if page contains the section first
+		// also check if the page has two different instances of the 
+		// string we're looking for
+		// If the page contains the string value of the specification section
+		if((pdfContent_W.contains(temp) && (pdfContent_W.lastIndexOf(temp) != pdfContent_W.indexOf(temp))) ||
+			(!pdfContent_W.contains(tempStr) || !pdfContent_W.contains(tempStr1))) { 
+			 
+			System.out.print("Found subsection ");
+			System.out.print(temp);
+			System.out.print(" on page ");
+			System.out.print(pageNumber);
+			System.out.print("\n");
+			int pageCount = 0;
+			int startPage = pageNumber;
+			while(!pdfContent_W.contains(tempStr) && !pdfContent_W.contains(tempStr1)) { //start counting how many pages this specification section is
+				pageCount++;
+				pageNumber++;
+				pdf.setStartPage(pageNumber);
+				pdf.setEndPage(pageNumber);
+				pdfContent_W = pdf.getText(document);
+				pdfContent_W = pdfContent_W.replaceAll(" ", "");
+				pdfContent_W = pdfContent_W.toLowerCase();
+			}
+			if(pdfContent_W.contains(tempStr) || pdfContent_W.contains(tempStr1)) {
+				pageCount++;
+				pageNumber++;
+			}
+			int endPage = startPage + (pageCount-1);
+			String pages = String.valueOf(startPage) + "-" + String.valueOf(endPage);
+			pageVec.add(pages);
+			System.out.print("Successfully added page numbers of subsection \n");
+		}
 	}
 	
-	
+
 	// The below method can be modified to accommodate all other divisions at a later date.
 	// Method that checks if specifications contain Division 22
 	public void checkSpecs() throws IOException {
-	
-		if(pdfContent.contains("DIVISION 22") || pdfContent.contains("division 22")) {
-			
-			String test = "", test1 = "", test2 = "";
-			
-			//create while loop to find the first sub section of the division
-			int divisionNumber = 220000;
-			while(divisionNumber <230000) {
-				String strDivNum = String.valueOf(divisionNumber); //convert int into string
-				if(pdfContent_W.contains(strDivNum)) {	
-					for(int i = 0; i < strDivNum.length(); i++) {
-						String temp = String.valueOf(strDivNum.charAt(i));
-						if(i == 2) {
-							test1 = test1.concat(" ");
-						}
-						test2 = test2.concat(temp);
-						if(i == 2) {
-							test2 = test2.concat(" ");
-						}
-						if(i == 5) {
-							test2 = test2.concat(" ");
-						}
-						test2 = test2.concat(temp);
-					}
-					// Once the first instance of a spec section is found, exit the loop
-					divisionNumber = 229999;
+		
+		int newNum = 0;
+		if(pdfContent.contains("DIVISION 22") || pdfContent.contains("division 22") || pdfContent_W.contains("section22") || pdfContent_W.contains("SECTION22")) {
+			for(int pageNumber = 1; pageNumber < document.getNumberOfPages(); pageNumber++) {
+				pdf.setStartPage(pageNumber);
+				pdf.setEndPage(pageNumber);
+				pdfContent_W = pdf.getText(document);   // No whitespace
+				pdfContent_W = pdfContent_W.replaceAll(" ", "");
+				pdfContent = pdf.getText(document);     // Yes whitespace
+				String test = "", test1 = "", test2 = "";
+				//System.out.println(pdfContent_W);
+				// WRITE CODE TO ITERATE TO NEXT PAGE STILL!
+				//create while loop to find the first sub section of the division
+				int divisionNumber;
+				if(newNum != 0) {
+					divisionNumber = newNum;
 				}
-				divisionNumber++;
-			}
-			
-			// Reset the division number back to 220000 and search for format style
-			divisionNumber = 220000;
-			if(pdfContent.contains(test1)) {
-				while(divisionNumber <230000) {
-					String strDivNum = String.valueOf(divisionNumber); //convert int into string
-					if(pdfContent_W.contains(strDivNum)) {	
-						test = "";
-						for(int i = 0; i < strDivNum.length(); i++) {
-							String temp = String.valueOf(strDivNum.charAt(i));
-							// Add space at second index 
-							if(i == 2) {
-								test = test.concat(" ");
-							}
-							test = test.concat(temp);
-						}
-						// Update the vector
-						specSetter(test);
-					}
-					divisionNumber++;
+				else {
+					divisionNumber = 220000;
 				}
-			}
-			// CHECK FORMAT STYLE 1:
-			//create while loop to check all sub sections of the division
-			else if(pdfContent.contains(test2)) {
 				while(divisionNumber <230000) {
+					//pdfContent_W = pdfContent.replaceAll(" ", "");
 					String strDivNum = String.valueOf(divisionNumber); //convert int into string
-					if(pdfContent_W.contains(strDivNum)) {	
-						test = "";
-						for(int i = 0; i < strDivNum.length(); i++) {
-							String temp = String.valueOf(strDivNum.charAt(i));
-							if(i == 2) {
-								test = test.concat(" ");
+					String temp1 = "section";
+					String temp2 = "SECTION";
+					//pdfContent_W = pdfContent_W.toLowerCase();
+					temp1 = temp1.concat(strDivNum);
+					temp2 = temp2.concat(strDivNum);
+					//pdfContent_W.contains(strDivNum) && (pdfContent_W.lastIndexOf(strDivNum)!= pdfContent_W.indexOf(strDivNum))) ||
+					if((((pdfContent_W.contains(temp1) || pdfContent_W.contains(temp2)) && 
+							(pdfContent_W.contains("1.1") || pdfContent_W.contains("part1") || pdfContent_W.contains("PART1"))))) {
+						// Three for - loops to create our test cases to determine format 
+							// TEST
+							for(int i = 0; i < strDivNum.length(); i++) {
+								test = test.concat(String.valueOf(strDivNum.charAt(i)));
 							}
-							if(i == 5) {
-								test = test.concat(" ");
+							// TEST1
+							for(int i = 0; i < strDivNum.length(); i++) {
+								if(i != 2) {
+									test1 = test1.concat(String.valueOf(strDivNum.charAt(i)));
+								}
+								else {
+									test1 = test1.concat(" ");
+									test1 = test1.concat(String.valueOf(strDivNum.charAt(i)));
+								}
 							}
-							test = test.concat(temp);
-						}
-						// Update the vector
-						specSetter(test);
-					}
-					divisionNumber++;
-				}
-			}
-			// CHECK FORMAT STYLE 2:
-			//create while loop to check all sub sections of the division
-			else {
-				while(divisionNumber <230000) {
-					String strDivNum = String.valueOf(divisionNumber); //convert int into string
-					if(pdfContent_W.contains(strDivNum)) {	
-						test = "";
-						for(int i = 0; i < strDivNum.length(); i++) {
-							String temp = String.valueOf(strDivNum.charAt(i));
-							test = test.concat(temp);
-						}
-						// In the future, we could consider the 
-						// following commented code in the case of spec section
-						// 220000.0#, where # represents any number 1-9:
-						// if(pdfContent.contains(test.concat(".0"))) 
-						
-						// Update the vector
-						specSetter(test);
+							// TEST 2
+							for(int i = 0; i < strDivNum.length(); i++) {
+								if(i != 2 || i != 5) {
+									test2 = test2.concat(String.valueOf(strDivNum.charAt(i)));
+								}
+								else {
+									test2 = test2.concat(" ");
+									test2 = test2.concat(String.valueOf(strDivNum.charAt(i)));
+								}
+							}
+							if(pdfContent.contains(test1)) {
+								D22Spec.add(test1);
+								pageFinder(pageNumber, strDivNum);
+							}
+							else if(pdfContent.contains(test2)) {
+								D22Spec.add(test2);
+								pageFinder(pageNumber, strDivNum);
+							}
+							else {
+								D22Spec.add(test);
+								pageFinder(pageNumber, strDivNum);
+							}
+							
+						newNum = divisionNumber+1; 
+						divisionNumber = 229999;
 					}
 					divisionNumber++;
 				}
@@ -197,12 +222,19 @@ public class PDFreader {
 			System.out.print("\n");
 		}
 	}
+	public void printPages() {
+		for(int i = 0; i < pageVec.size(); i++) {
+			System.out.print(D22Spec.elementAt(i));
+			System.out.print("'s pages are: ");
+			System.out.print(pageVec.elementAt(i));
+			System.out.print("\n");
+		}
+	}
+	
 	
 	public void specSetter(String specNum) {
 		D22Spec.add(specNum);
 	}
-
-	
 	
 	// Getter method
 	public String getPdfContent() {
