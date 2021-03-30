@@ -41,10 +41,15 @@ public class PDFreader {
 	private String pdfContent_W; //PDF file without whitespace as a string
 	private PDDocument document; //PDF file
 	
-	// Public members:
-	public Vector<String> D22Spec =new Vector<String>(); //Holds s
-	public Vector<String> pageVec =new Vector<String>(); //Holds page numbers of spec sections stored in D22Spec
+	/////////////////////////////////////////////////////////////////////////
 	
+	
+	// Public members:
+	public Vector<String> specInfo = new Vector<String>(); // Store data with "Spec Section - *product data*", per entry
+	public Vector<String> D22Spec  = new Vector<String>(); //Holds s
+	public Vector<String> pageVec  = new Vector<String>(); //Holds page numbers of spec sections stored in D22Spec
+	public int curStartPage; 
+	public int curEndPage;
 	
 	// String Constructor:
 	public PDFreader(String PDFpath) throws IOException {
@@ -78,18 +83,13 @@ public class PDFreader {
 		}
 	}
 	
+
+	
 	// Method that finds page numbers of spec sections
 	public void pageFinder(int pageNumber, String temp) throws IOException {
 		
-		//pdfContent_W = pdfContent_W.replaceAll(" ", "");
-		// take the passed in string and iterate by 1
-		// Manipulate strings for searching conditions
-		// if the conditional statement finds the a new section, then stop and return to checkSpecs()
-		//int tempInt = Integer.parseInt(temp)+1;
-		//String intStr = String.valueOf(tempInt);
 		String tempStr = "endofsection";
 		String tempStr1 = "ENDOFSECTION";
-		//pageNumber = pageNumber + 57;
 		pdf.setStartPage(pageNumber);
 		pdf.setEndPage(pageNumber);
 		pdfContent_W = pdf.getText(document);
@@ -215,13 +215,74 @@ public class PDFreader {
 		}
 	}
 	
+	// Method that finds product data that requires submittals
+	public void findProductData() throws IOException {
+		
+		for(int i = 0; i < pageVec.size(); i++) {
+			// Get our page numbers
+			ptoi(pageVec.elementAt(i));
+			//Set pages to be our spec sections
+			pdf.setStartPage(curStartPage);
+			pdf.setEndPage(curEndPage);
+			pdfContent_W = pdf.getText(document);
+			pdfContent   = pdf.getText(document);
+			pdfContent_W = pdfContent_W.replaceAll(" ", "");
+			pdfContent_W = pdfContent_W.toLowerCase();
+			String section = D22Spec.elementAt(i);
+			// Start out at 2.1
+			int productLine = 2;
+			int counter = 1;
+			String productLineStr = String.valueOf(productLine);
+			productLineStr = productLineStr.concat(".");
+			
+			while(productLine != 3) {
+				String tempStr = productLineStr.concat(String.valueOf(counter));
+				if(pdfContent.contains(tempStr)) {
+					// Get index of the sub section
+					int startIndex = pdfContent.indexOf(tempStr);
+					// Get index of the rest of that line = description
+					int endIndex = pdfContent.indexOf("\n",startIndex);
+					String pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
+					specInfo.add(pushString);
+					//iterate counter
+					counter++;
+				}
+				// need else if's to cover up to 2.1.1.1 as a sub section
+				else if(pdfContent.contains(productLineStr + ".1")) {
+					
+				}
+			}
+		}
+	}
+		
+
 	
+	// Method that converts the page numbers from strings to integers
+	public void ptoi(String str) {
+		
+		// find the index of the "-"
+		int tempInt = str.indexOf('-');
+		
+		// find the last index of the string
+		int endInt = str.length();
+		
+		// Using string methods, get start page and end page of passed in string
+		// and modify public members.
+		String tempStr = str.substring(0,tempInt);
+		curStartPage = Integer.parseInt(tempStr);
+		tempStr = str.substring(tempInt+1,endInt);
+		curEndPage = Integer.parseInt(tempStr);
+		
+	}
+	
+	// Method that prints Spec sections
 	public void printSpecs() {
 		for (int i = 0; i < D22Spec.size(); i++) {
 			System.out.print(D22Spec.get(i));
 			System.out.print("\n");
 		}
 	}
+	// Method that prints page numbers of found Spec sections
 	public void printPages() {
 		for(int i = 0; i < pageVec.size(); i++) {
 			System.out.print(D22Spec.elementAt(i));
