@@ -46,7 +46,7 @@ public class PDFreader {
 	
 	// Public members:
 	public Vector<String> specInfo = new Vector<String>(); // Store data with "Spec Section - *product data*", per entry
-	public Vector<String> D22Spec  = new Vector<String>(); //Holds s
+	public Vector<String> D22Spec  = new Vector<String>(); //Holds spec sections within Division 22
 	public Vector<String> pageVec  = new Vector<String>(); //Holds page numbers of spec sections stored in D22Spec
 	public int curStartPage; 
 	public int curEndPage;
@@ -165,11 +165,11 @@ public class PDFreader {
 					if((((pdfContent_W.contains(temp1) || pdfContent_W.contains(temp2)) && 
 							(pdfContent_W.contains("1.1") || pdfContent_W.contains("part1") || pdfContent_W.contains("PART1"))))) {
 						// Three for - loops to create our test cases to determine format 
-							// TEST
+							// TEST XXXXXX or 220000
 							for(int i = 0; i < strDivNum.length(); i++) {
 								test = test.concat(String.valueOf(strDivNum.charAt(i)));
 							}
-							// TEST1
+							// TEST1 XX XXXX or 22 0000
 							for(int i = 0; i < strDivNum.length(); i++) {
 								if(i != 2) {
 									test1 = test1.concat(String.valueOf(strDivNum.charAt(i)));
@@ -179,7 +179,7 @@ public class PDFreader {
 									test1 = test1.concat(String.valueOf(strDivNum.charAt(i)));
 								}
 							}
-							// TEST 2
+							// TEST 2 XX XX XX 22 00 00 
 							for(int i = 0; i < strDivNum.length(); i++) {
 								if(i != 2 || i != 5) {
 									test2 = test2.concat(String.valueOf(strDivNum.charAt(i)));
@@ -223,7 +223,7 @@ public class PDFreader {
 			ptoi(pageVec.elementAt(i));
 			//Set pages to be our spec sections
 			
-			String section = D22Spec.elementAt(i);
+			String section = D22Spec.elementAt(i) + " ";
 			// Start out at 2.1
 			String tempStr = "2.1";
 			//  .1  // .0.1 // .0.0.1
@@ -238,54 +238,62 @@ public class PDFreader {
 			while(pdfContent.contains(tempStr)) {
 				
 				// Get index of the sub section
-				int startIndex = pdfContent.indexOf(tempStr + " ");
+				int startIndex = pdfContent.indexOf("\n" + tempStr + " ");
 				// Get index of the rest of that line = description
-				int endIndex = pdfContent.indexOf("\n",startIndex);
+				int endIndex = pdfContent.indexOf("\r",startIndex);
 				String pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
 				specInfo.add(pushString);
 				
 				//if pdfContent contains "2.#.#" - i.e. *2.1.1*
 				String tempStr2 = tempStr.concat(".1");
-				while(pdfContent.contains(tempStr2) || pdfContent.contains(tempStr.concat(".1"))) {
+				while(pdfContent.contains(tempStr2)) {
 		
 					// Get index of the sub section
-					startIndex = pdfContent.indexOf(tempStr2 + " ");
+					startIndex = pdfContent.indexOf("\n" + tempStr2 + " ");
 					// Get index of the rest of that line = description
-					endIndex = pdfContent.indexOf("\n",startIndex);
+					endIndex = pdfContent.indexOf("\r",startIndex);
 					pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
 					specInfo.add(pushString);
 					
 					//Check if pdfContent contains "2.#.#.#" - i.e. *2.1.1.1*
 					String tempStr3 = tempStr2.concat(".1");
-					while(pdfContent.contains(tempStr3) || pdfContent.contains(tempStr2.concat(".1"))) {
+					while(pdfContent.contains(tempStr3)) {
 						
 						// Get index of the sub section
-						startIndex = pdfContent.indexOf(tempStr3+ " ");
+						startIndex = pdfContent.indexOf("\n" + tempStr3+ " ");
 						// Get index of the rest of that line = description
-						endIndex = pdfContent.indexOf("\n",startIndex);
+						endIndex = pdfContent.indexOf("\r",startIndex);
 						pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
 						specInfo.add(pushString);
+						
+						// Rebuild the string before iterating
+						// 2.#.#.#
+						tempStr3 = "2.";
+						tempStr3 = tempStr3.concat(String.valueOf(counter_1));
+						tempStr3 = tempStr3.concat("." + String.valueOf(counter_01));
+						counter_001++;
+						tempStr3 = tempStr3.concat("." + String.valueOf(counter_001));
 							
 					}
+					//reset our check string and counter
+					counter_001 = 1;
+					tempStr3 = "";
 					// Rebuild the string before iterating
-					// 2.#.#.#
-					tempStr3 = "2.";
-					tempStr3 = tempStr3.concat(String.valueOf(counter_1));
-					tempStr3 = tempStr3.concat("." + String.valueOf(counter_01));
-					counter_001++;
-					tempStr3 = tempStr3.concat("." + String.valueOf(counter_001));
+					// 2.#.#
+					tempStr2 = "2.";
+					tempStr2 = tempStr2.concat(String.valueOf(counter_1));
+					counter_01++;
+					tempStr2 = tempStr2.concat("." + String.valueOf(counter_01));
 				}
+				//reset counter and tempStr2
+				counter_01 = 1;
+				tempStr2 = "";
 				// Rebuild the string before iterating
-				// 2.#.#
-				tempStr2 = "2.";
-				tempStr2 = tempStr2.concat(String.valueOf(counter_1));
-				counter_01++;
-				tempStr2 = tempStr2.concat("." + String.valueOf(counter_01));
+				tempStr = "2.";
+				counter_1++;	
+				tempStr = tempStr.concat(String.valueOf(counter_1));
 			}
-				// Rebuild the string before iterating
-			tempStr = "2.";
-			counter_1++;	
-			tempStr = tempStr.concat(String.valueOf(counter_1));
+			
 		}
 	}
 		
