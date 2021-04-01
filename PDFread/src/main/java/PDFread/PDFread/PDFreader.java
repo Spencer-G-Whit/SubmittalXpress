@@ -222,36 +222,70 @@ public class PDFreader {
 			// Get our page numbers
 			ptoi(pageVec.elementAt(i));
 			//Set pages to be our spec sections
-			pdf.setStartPage(curStartPage);
-			pdf.setEndPage(curEndPage);
-			pdfContent_W = pdf.getText(document);
-			pdfContent   = pdf.getText(document);
-			pdfContent_W = pdfContent_W.replaceAll(" ", "");
-			pdfContent_W = pdfContent_W.toLowerCase();
+			
 			String section = D22Spec.elementAt(i);
 			// Start out at 2.1
-			int productLine = 2;
-			int counter = 1;
-			String productLineStr = String.valueOf(productLine);
-			productLineStr = productLineStr.concat(".");
+			String tempStr = "2.1";
+			//  .1  // .0.1 // .0.0.1
+			int counter_1 = 1, counter_01 = 1, counter_001 = 1;
 			
-			while(productLine != 3) {
-				String tempStr = productLineStr.concat(String.valueOf(counter));
-				if(pdfContent.contains(tempStr)) {
+			//Reading page by page
+			pdf.setStartPage(curStartPage);
+			pdf.setEndPage(curEndPage);
+			pdfContent   = pdf.getText(document);
+			
+			//if pdfContent contains "2.#" - i.e. *2.1*
+			while(pdfContent.contains(tempStr)) {
+				
+				// Get index of the sub section
+				int startIndex = pdfContent.indexOf(tempStr + " ");
+				// Get index of the rest of that line = description
+				int endIndex = pdfContent.indexOf("\n",startIndex);
+				String pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
+				specInfo.add(pushString);
+				
+				//if pdfContent contains "2.#.#" - i.e. *2.1.1*
+				String tempStr2 = tempStr.concat(".1");
+				while(pdfContent.contains(tempStr2) || pdfContent.contains(tempStr.concat(".1"))) {
+		
 					// Get index of the sub section
-					int startIndex = pdfContent.indexOf(tempStr);
+					startIndex = pdfContent.indexOf(tempStr2 + " ");
 					// Get index of the rest of that line = description
-					int endIndex = pdfContent.indexOf("\n",startIndex);
-					String pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
+					endIndex = pdfContent.indexOf("\n",startIndex);
+					pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
 					specInfo.add(pushString);
-					//iterate counter
-					counter++;
-				}
-				// need else if's to cover up to 2.1.1.1 as a sub section
-				else if(pdfContent.contains(productLineStr + ".1")) {
 					
+					//Check if pdfContent contains "2.#.#.#" - i.e. *2.1.1.1*
+					String tempStr3 = tempStr2.concat(".1");
+					while(pdfContent.contains(tempStr3) || pdfContent.contains(tempStr2.concat(".1"))) {
+						
+						// Get index of the sub section
+						startIndex = pdfContent.indexOf(tempStr3+ " ");
+						// Get index of the rest of that line = description
+						endIndex = pdfContent.indexOf("\n",startIndex);
+						pushString = section.concat(" " + pdfContent.substring(startIndex,endIndex));
+						specInfo.add(pushString);
+							
+					}
+					// Rebuild the string before iterating
+					// 2.#.#.#
+					tempStr3 = "2.";
+					tempStr3 = tempStr3.concat(String.valueOf(counter_1));
+					tempStr3 = tempStr3.concat("." + String.valueOf(counter_01));
+					counter_001++;
+					tempStr3 = tempStr3.concat("." + String.valueOf(counter_001));
 				}
+				// Rebuild the string before iterating
+				// 2.#.#
+				tempStr2 = "2.";
+				tempStr2 = tempStr2.concat(String.valueOf(counter_1));
+				counter_01++;
+				tempStr2 = tempStr2.concat("." + String.valueOf(counter_01));
 			}
+				// Rebuild the string before iterating
+			tempStr = "2.";
+			counter_1++;	
+			tempStr = tempStr.concat(String.valueOf(counter_1));
 		}
 	}
 		
@@ -273,6 +307,13 @@ public class PDFreader {
 		tempStr = str.substring(tempInt+1,endInt);
 		curEndPage = Integer.parseInt(tempStr);
 		
+	}
+	
+	public void printSpecInfo() {
+		for (int i = 0; i < specInfo.size(); i++) {
+			System.out.print(specInfo.get(i));
+			System.out.print("\n");
+		}
 	}
 	
 	// Method that prints Spec sections

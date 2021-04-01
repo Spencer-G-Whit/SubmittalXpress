@@ -15,6 +15,8 @@ public class App
         PDFtest.printSpecs();
         System.out.print("Here are the corresponding page numbers: \n");
         PDFtest.printPages();
+        PDFtest.findProductData();
+        PDFtest.printSpecInfo();
         //PDFtest.pageFinder();
         System.out.print("\n Program finished running");
     }
