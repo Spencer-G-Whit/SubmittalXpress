@@ -257,6 +257,7 @@ public class PDFreader {
 			
 			
 			if(tempStr.length() < 4) {
+				// Perform the milspec/federal algorithm for subsection style of "2.#.#.#"
 				//if pdfContent contains "2.#" - i.e. *2.1*
 				while(pdfContent.contains("\n" + tempStr + " ") && pdfContent.indexOf(tempStr + " ") > minIndex) {
 					
@@ -322,7 +323,7 @@ public class PDFreader {
 				}
 				
 			}
-			 // Perform our same search as above but without "\n"
+			 // Perform the alternative algorithm for subsection style of "2.01"
 			else {	
 					while(pdfContent_W.contains("\n" + tempStr) && pdfContent_W.lastIndexOf("\n" + tempStr) > minIndex) {
 					// Get index of the sub section
