@@ -103,7 +103,14 @@ public class PDFreader {
 			(!pdfContent_W.contains(tempStr) || !pdfContent_W.contains(tempStr1))) { 
 			 
 			System.out.print("Found subsection ");
-			System.out.print(temp);
+			for(int i = 0; i < D22Spec.size(); i ++) {
+				String Str = D22Spec.elementAt(i);
+				Str = Str.replaceAll(" ", "");
+				if(Str.equals(temp)) {
+					System.out.print(D22Spec.elementAt(i));
+				}
+			}
+			//System.out.print(temp);
 			System.out.print(" on page ");
 			System.out.print(pageNumber);
 			System.out.print("\n");
@@ -137,10 +144,12 @@ public class PDFreader {
 		int newNum = 0;
 		if(pdfContent.contains("DIVISION 22") || pdfContent.contains("division 22") || pdfContent_W.contains("section22") || pdfContent_W.contains("SECTION22")) {
 			for(int pageNumber = 1; pageNumber < document.getNumberOfPages(); pageNumber++) {
+				//Set start and end page to be the same
+				//analyzing one page at a time
 				pdf.setStartPage(pageNumber);
 				pdf.setEndPage(pageNumber);
 				pdfContent_W = pdf.getText(document);   // No whitespace
-				pdfContent_W = pdfContent_W.replaceAll(" ", "");
+				pdfContent_W = pdfContent_W.replaceAll(" ", ""); // Make sure to remove white space with every loop where pdfContent_W is redefined
 				pdfContent = pdf.getText(document);     // Yes whitespace
 				String test = "", test1 = "", test2 = "";
 				//System.out.println(pdfContent_W);
@@ -181,7 +190,7 @@ public class PDFreader {
 							}
 							// TEST 2 XX XX XX 22 00 00 
 							for(int i = 0; i < strDivNum.length(); i++) {
-								if(i != 2 || i != 5) {
+								if(i != 2 && i != 4) {
 									test2 = test2.concat(String.valueOf(strDivNum.charAt(i)));
 								}
 								else {
@@ -215,7 +224,7 @@ public class PDFreader {
 		}
 	}
 	
-	// Method that finds product data that requires submittals
+	// Method that finds product data requirements to create submittals
 	public void findProductData() throws IOException {
 		
 		for(int i = 0; i < pageVec.size(); i++) {
@@ -237,7 +246,7 @@ public class PDFreader {
 			int tempIndex = pdfContent.indexOf("\n2.1");
 			int altIndex = pdfContent.indexOf("\n2.01");
 			if((tempIndex - 10 > 0  && altIndex - 10 > 0) && (tempIndex > altIndex)) {
-				tempStr = "2.01";
+				tempStr = altStr;
 				minIndex = altIndex - 10;
 			}
 			String section = D22Spec.elementAt(i) + " ";
@@ -259,7 +268,6 @@ public class PDFreader {
 					specInfo.add(pushString);
 					//System.out.print(specInfo.elementAt(specInfo.size()-1));
 					//System.out.print("\n");
-					
 					//if pdfContent contains "2.#.#" - i.e. *2.1.1*
 					String tempStr2 = tempStr.concat(".1");
 					while(pdfContent.contains("\n" + tempStr2 + " ") && pdfContent.indexOf(tempStr2 + " ") >= minIndex) {
@@ -273,7 +281,6 @@ public class PDFreader {
 						specInfo.add(pushString);
 						//System.out.print(specInfo.elementAt(specInfo.size()-1));
 						//System.out.print("\n");
-						
 						//Check if pdfContent contains "2.#.#.#" - i.e. *2.1.1.1*
 						String tempStr3 = tempStr2.concat(".1");
 						while(pdfContent.contains("\n" + tempStr3 + " ") && pdfContent.indexOf(tempStr3 + " ") >= minIndex) {
@@ -286,15 +293,13 @@ public class PDFreader {
 							specInfo.add(pushString);
 							//System.out.print(specInfo.elementAt(specInfo.size()-1));
 							//System.out.print("\n");
-							
 							// Rebuild the string before iterating
 							// 2.#.#.#
 							tempStr3 = "2.";
 							tempStr3 = tempStr3.concat(String.valueOf(counter_1));
 							tempStr3 = tempStr3.concat("." + String.valueOf(counter_01));
 							counter_001++;
-							tempStr3 = tempStr3.concat("." + String.valueOf(counter_001));
-								
+							tempStr3 = tempStr3.concat("." + String.valueOf(counter_001));	
 						}
 						//reset our check string and counter
 						counter_001 = 1;
@@ -364,7 +369,7 @@ public class PDFreader {
 	public void printSpecInfo() {
 		for (int i = 0; i < specInfo.size(); i++) {
 			System.out.print(specInfo.get(i));
-			System.out.print("\n");
+				System.out.print("\n");
 		}
 	}
 	
