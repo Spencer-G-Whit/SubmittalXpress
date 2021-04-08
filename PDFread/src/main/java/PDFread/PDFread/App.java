@@ -11,7 +11,7 @@ public class App
     	// LIST OF DIFFERENT SPECIFICATIONS TO TEST
     	//"C:\\Users\\msvetlichny23\\Desktop\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf"
     	//PDFreader PDFtest = new PDFreader("C:\\\\Users\\\\Michael\\\\Desktop\\\\SPECS\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf");
-    	//PDFreader PDFtest = new PDFreader("C:\\Users\\Michael\\Desktop\\SPECS\\LILIA_30_CD_Spec_V4_UPDATED.pdf");
+    	//PDFreader PDFtest = new PDFreader("C:\\Users\\sgariano22\\Desktop\\SubmitalXpress\\SubmittalXpress\\specs_AquaWaikikiWave_Building_ReviewSet_150109.pdf");
         PDFreader PDFtest = new PDFreader(VVM.getFilePath());
         PDFtest.checkSpecs();
 //        System.out.print("Here are the specification sections we found in Division 22: \n");
