@@ -1,10 +1,8 @@
 package submittalProj.project;
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +18,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
-import javax.swing.JProgressBar;
 import java.awt.FlowLayout;
 
 public class SubmittalUI {
@@ -28,9 +25,11 @@ public class SubmittalUI {
 	private JFrame frmSubmittalXpress;
 	private JTextField textField;
 	private JButton btnNewButton;
+	private JButton Continue;
 	protected static String filePath; 
 	private JFileChooser jFilePick;
 	private JFrame pop;
+	protected static SubmittalUI window = new SubmittalUI();
 	
 	/**
 	 * Launch the application.
@@ -39,8 +38,8 @@ public class SubmittalUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SubmittalUI window = new SubmittalUI();
 					window.frmSubmittalXpress.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,6 +76,7 @@ public class SubmittalUI {
 	
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public SubmittalUI() {
 		initialize();
@@ -111,16 +111,15 @@ public class SubmittalUI {
 		txtpnSubmittalxpress.setBackground(SystemColor.menu);
 		txtpnSubmittalxpress.setText("               SubmittalXPress");
 		txtpnSubmittalxpress.setFont(new Font("Rockwell", Font.PLAIN, 18));
+	
+	    Continue = new JButton("Continue");
+		Continue.addActionListener(actionListener);
 		
-		JProgressBar progressBar = new JProgressBar();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(165)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(242)
 							.addComponent(btnNewButton))
@@ -128,9 +127,12 @@ public class SubmittalUI {
 							.addGap(139)
 							.addComponent(txtpnSubmittalxpress, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(204)
-							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(174, Short.MAX_VALUE))
+							.addGap(165)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(258)
+							.addComponent(Continue)))
+					.addContainerGap(152, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -141,13 +143,13 @@ public class SubmittalUI {
 					.addComponent(btnNewButton)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(40)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(261, Short.MAX_VALUE))
+					.addGap(35)
+					.addComponent(Continue)
+					.addContainerGap(347, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		frmSubmittalXpress.setBounds(500, 140, 631, 500);
-		frmSubmittalXpress.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSubmittalXpress.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	 ActionListener actionListener = new ActionListener() {
@@ -158,22 +160,17 @@ public class SubmittalUI {
 	        	
 	        	openFile();
 	        	
-	        //	try {
-				//	ReadandWritePDF.readPDFTest();
-				//} catch (IOException e) {
-					// TODO Auto-generated catch block
-				//	e.printStackTrace();
-				//}
+	        }else if(a.getSource() == Continue && filePath != null) {
+	        	//window.frmSubmittalXpress.dispose();
+	        	window.frmSubmittalXpress.setVisible(false);
+	        	new SecScreen();
+	        }
 	        	
 	        	}
 	       
-	        }
+	        };
 	   
-	     };
-
-
 }
-	
 	
 	
 	
