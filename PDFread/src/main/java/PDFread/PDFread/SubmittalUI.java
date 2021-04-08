@@ -32,7 +32,7 @@ public class SubmittalUI {
 	private JFileChooser jFilePick;
 	private JFrame pop;
 	protected static SubmittalUI window = new SubmittalUI();
-	
+	public PDFreader PDFtest;
 	/**
 	 * Launch the application.
 	 */
@@ -165,10 +165,9 @@ public class SubmittalUI {
 	        	openFile();
 	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
-	        	window.frmSubmittalXpress.dispose();
+	        	//window.frmSubmittalXpress.dispose();
 	        	window.frmSubmittalXpress.setVisible(false);
-	        	new SecScreen();
-	        	    PDFreader PDFtest;
+	   
 					try {
 						System.out.print("Starting PDF reader \n");
 				    	// LIST OF DIFFERENT SPECIFICATIONS TO TEST
@@ -189,6 +188,9 @@ public class SubmittalUI {
 				        //PDFtest.pageFinder();
 				        System.out.print("================================================");
 				        System.out.print("\nProgram finished running");
+				        
+				        new SecScreen();
+				        
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
