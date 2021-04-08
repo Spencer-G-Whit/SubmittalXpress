@@ -1,4 +1,4 @@
-
+package PDFread.PDFread;
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -7,6 +7,8 @@ import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JPanel;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -67,11 +69,13 @@ public class SubmittalUI {
 // then take file path. 
 		 if (JFileChooser.APPROVE_OPTION == j && filePath.endsWith(".pdf")) {
 			   textField.setText(filePath);	 
+			  
 		} else {
 			JOptionPane.showMessageDialog(pop, "Invalid, not a .pdf extension", "ALERT", JOptionPane.WARNING_MESSAGE);
 		}
 		 isPdf = false; 
 	}
+		
 }
 	
 	/**
@@ -161,9 +165,35 @@ public class SubmittalUI {
 	        	openFile();
 	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
-	        	//window.frmSubmittalXpress.dispose();
+	        	window.frmSubmittalXpress.dispose();
 	        	window.frmSubmittalXpress.setVisible(false);
 	        	new SecScreen();
+	        	    PDFreader PDFtest;
+					try {
+						System.out.print("Starting PDF reader \n");
+				    	// LIST OF DIFFERENT SPECIFICATIONS TO TEST
+				    	//"C:\\Users\\msvetlichny23\\Desktop\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf"
+				    	//PDFreader PDFtest = new PDFreader("C:\\\\Users\\\\Michael\\\\Desktop\\\\SPECS\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf");
+				    	//PDFreader PDFtest = new PDFreader("C:\\Users\\Michael\\Desktop\\SPECS\\LILIA_30_CD_Spec_V4_UPDATED.pdf");
+				        PDFtest = new PDFreader(filePath);
+				        PDFtest.checkSpecs();
+		//		        System.out.print("Here are the specification sections we found in Division 22: \n");
+//				        PDFtest.printSpecs();
+				        System.out.print("================================================");
+				        System.out.print("\nHere are the corresponding page numbers: \n");
+				        PDFtest.printPages();
+				        System.out.print("================================================");
+				        System.out.print("\nHere are the sub sections in each spec section: \n");
+				        PDFtest.findProductData();
+				        PDFtest.printSpecInfo();
+				        //PDFtest.pageFinder();
+				        System.out.print("================================================");
+				        System.out.print("\nProgram finished running");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			      
 	        }
 	        	
 	        	}

@@ -1,9 +1,12 @@
+package PDFread.PDFread;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+
 
 public class SecScreen extends SubmittalUI{
 

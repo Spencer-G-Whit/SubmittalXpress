@@ -1,4 +1,4 @@
-package submittalProj.project;
+package PDFread.PDFread;
 
 public class VVM extends SubmittalUI {
 
