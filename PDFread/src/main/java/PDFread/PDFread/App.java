@@ -1,7 +1,7 @@
 package PDFread.PDFread;
 
 import java.io.IOException;
-
+import java.sql.SQLException;
 //http://www.pavilionconstruction.com/uploaded-files/Platinum%20Place/Drawings%206.4.14/2014%2005%2016%20Project%20Manual%20INCOMPLETE.pdf
 public class App 
 {
@@ -26,6 +26,10 @@ public class App
         //PDFtest.pageFinder();
         System.out.print("================================================");
         System.out.print("\nProgram finished running");
+        
+    	//Test for database connection
+    	//Database.testQuery();
+    	//Database.testQuery2();
     }
     
     
