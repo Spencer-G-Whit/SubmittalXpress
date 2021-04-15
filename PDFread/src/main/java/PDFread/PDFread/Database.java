@@ -38,7 +38,7 @@ public class Database {
 	}
 	
 	//Function that will insert information into one of the following tables (Brands - Product - Product_Data)
-	public void insertTuple() {
+	public void insertTuple(String table) {
 		
 	}
 	

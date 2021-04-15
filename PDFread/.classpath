@@ -25,7 +25,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/sgariano22/.m2/repository/org/hsqldb/hsqldb/2.6.0/hsqldb-2.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/sgariano22/.m2/repository/com/healthmarketscience/jackcess/jackcess/4.0.0/jackcess-4.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/sgariano22/Desktop/SubmitalXpress/SubmittalXpress/PDFread/lib/hsqldb-2.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/sgariano22/Desktop/SubmitalXpress/SubmittalXpress/PDFread/lib/jackcess-4.0.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
