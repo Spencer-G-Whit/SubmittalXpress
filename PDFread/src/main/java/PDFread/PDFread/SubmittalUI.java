@@ -177,17 +177,20 @@ public class SubmittalUI {
 	
 	 ActionListener actionListener = new ActionListener() {
 	        @Override
+	        
 	        public void actionPerformed(ActionEvent a) {
 	        
+	        	progressBar.setIndeterminate(true);
+				
+	        	
 	        if(a.getSource() == btnNewButton) {
 	        	
 	        	openFile();
 	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
 	        	
-	        	window.progressBar.setVisible(false);
-	        	window.progressBar.setIndeterminate(true);
-				
+	  
+
 					try {
 						
 						System.out.print("Starting PDF reader \n");
@@ -198,7 +201,7 @@ public class SubmittalUI {
 				        PDFtest = new PDFreader(filePath);
 				        PDFtest.checkSpecs();
 		//		        System.out.print("Here are the specification sections we found in Division 22: \n");
-//				        PDFtest.printSpecs();
+       //				        PDFtest.printSpecs();
 				        System.out.print("================================================");
 				        System.out.print("\nHere are the corresponding page numbers: \n");
 				        PDFtest.printPages();
