@@ -115,10 +115,77 @@ public class Database {
 	}
 	
 	//Function that will insert information into one of the following tables (Brands - Product - Product_Data)
-	public void insertTuple(String table) {
+	public void insertBrandTuple(String Name,String Website,String Address) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+		try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        }
+        catch(ClassNotFoundException cnfex) {
+            System.out.println("Problem in loading or "
+                 + "registering MS Access JDBC driver"
+            		);
+           cnfex.printStackTrace();
+        }
+        catch (Exception e) {
+            System.out.println("Problem in loading or "
+                    + "registering MS Access JDBC driver"
+            		+ e.getLocalizedMessage()
+               		);
+              e.printStackTrace();
+        }
+ 
+        // Opening database connection
+        try {
+            String msAccessDBName = "..//Database//SubmittalXpress.accdb";
+            String dbURL = "jdbc:ucanaccess://"
+                    + msAccessDBName;
+ 
+            // Create and 
+            // get connection using DriverManager class
+            //connection = DriverManager.getConnection(dbURL); 
+            connection = DriverManager.getConnection(dbURL);
 		
+			String sql = "INSERT INTO Brands (Brand_ID, Brand_Name, Brand_Website, Brand_Address) VALUES (?,?,?,?)";
+			preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(2, Name);
+            preparedStatement.setString(3, Website);
+            preparedStatement.setString(4, Address);
+            
+            int row = preparedStatement.executeUpdate();
+            if(row > 0) {
+            	System.out.println("Tuple has been inserted successfully.");
+            }
+        }
+        finally {
+            // Closing database connection
+            try {
+                if(null != connection) {
+ 
+                    // cleanup resources, once after processing
+                    resultSet.close();
+                    preparedStatement.close();
+ 
+                    // and then finally close connection
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }
 	}
 	
+	public static void insertProductTuple() {
+	
+	}
+	
+	public static void insertCutSheetTuple() {
+		
+		
+	}
+
 	//Test query used to test if the connection to the database will work
 	public static void testQuery() throws SQLException {
         // variables
