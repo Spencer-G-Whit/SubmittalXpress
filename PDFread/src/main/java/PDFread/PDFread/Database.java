@@ -31,6 +31,83 @@ public class Database {
 
 			
 		}
+		else if(str.contains("JOINING")){
+			
+		}
+		else if(str.contains("DIELECTRIC")){
+			
+		}
+		else if(str.contains("ESCUTCHEON")){
+			
+		}
+		else if(str.contains("LIQUID-IN-GLASS") ||str.contains("THERMOMETER")) {
+			
+		}
+		else if(str.contains("THERMOWELL")) {
+			
+		}
+		else if(str.contains("PRESSURE GAGE")) {
+			
+		}
+		else if(str.contains("GAGE ATTACH")) {
+			
+		}
+		//////////////////////////////////////////
+		// VALVES
+		//////////////////////////////////////////
+		else if(str.contains("BALL VALVE")) {
+			
+		}
+		else if(str.contains("GATE VALVE")) {
+			
+		}
+		else if(str.contains("BALANCING VALVE")) {
+			
+		}
+		else if(str.contains("CHECK VALVE")) {
+			
+		}
+		else if(str.contains("METAL PIPE HANGER")) {
+			
+		}
+		else if(str.contains("THERMAL-HANGER") || str.contains("SHIELD INSERT") || str.contains("THERMAL HANGER")) {
+			
+		}
+		else if(str.contains("FASTENER SYSTEM")) {
+			
+		}
+		else if(str.contains("EQUIPMENT LABEL")) {
+			
+		}
+		else if(str.contains("WARNING SIGN")) {
+			
+		}
+		else if(str.contains("PIPE LABEL")) {
+			
+		}
+		else if(str.contains("INSULATION MATERIAL")) {
+			
+		}
+		else if(str.contains("INSULATION CEMENT")) {
+			
+		}
+		else if(str.contains("ADHESIVE")) {
+			
+		}
+		else if(str.contains("MASTIC")) {
+			
+		}
+		else if(str.contains("SEALANT")) {
+			
+		}
+		else if(str.contains("FACTORY-APPLIED") || str.contains("FACTORY APPLIED")) {
+			
+		}
+		//else case for product data not stored in the database
+		else {
+			//provide something for the UI to tell the user that product data for this item does not exist in out database
+		}
+		
 		
 		//else if() {
 			
