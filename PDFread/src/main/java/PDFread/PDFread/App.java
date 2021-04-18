@@ -2,6 +2,7 @@ package PDFread.PDFread;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.net.URL;
 //http://www.pavilionconstruction.com/uploaded-files/Platinum%20Place/Drawings%206.4.14/2014%2005%2016%20Project%20Manual%20INCOMPLETE.pdf
 public class App 
 {
@@ -27,8 +28,16 @@ public class App
    //     System.out.print("================================================");
    //     System.out.print("\nProgram finished running");
         
+    	
+    	//Tests for Insert
+    	//Database.insertBrandTuple("TestBrand", null, null);
+    	//Database.insertProductTuple("TestProd2", "Pipe", "22", "Long 12 diamter pipe");
+    	//URL url = new URL("https://www.hunterindustries.com/sites/default/files/CA-Cutsheet-Pro-Spray-US.pdf");
+    	//Database.insertCutSheetTuple(2, 2, url);
+    	
+    	//Tests for Query
     	//Test for database connection
-    	Database.testQuery();
+    	//Database.testQuery();
     	//Database.testQuery2();
     }
     

@@ -7,8 +7,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.net.URL;
 
-import net.ucanaccess.jdbc.UcanaccessDriver;
+
 
 public class Database {
 	
@@ -115,20 +116,24 @@ public class Database {
 	}
 	
 	//Function that will insert information into one of the following tables (Brands - Product - Product_Data)
-	public void insertBrandTuple(String Name,String Website,String Address) throws SQLException {
-        Connection connection = null;
+	public static void insertBrandTuple(String Brand_Name,String Website,String Address) throws SQLException {
+        //variables
+		Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-		try {
+        // Loading or 
+        // registering Oracle JDBC driver class
+        try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         }
-        catch(ClassNotFoundException cnfex) {
+        //Exception if the class is not found
+        catch(ClassNotFoundException cnfex) { 
             System.out.println("Problem in loading or "
                  + "registering MS Access JDBC driver"
             		);
            cnfex.printStackTrace();
         }
-        catch (Exception e) {
+        //Exception if the initialization fails
+        catch (Exception e) { 
             System.out.println("Problem in loading or "
                     + "registering MS Access JDBC driver"
             		+ e.getLocalizedMessage()
@@ -146,25 +151,27 @@ public class Database {
             // get connection using DriverManager class
             //connection = DriverManager.getConnection(dbURL); 
             connection = DriverManager.getConnection(dbURL);
-		
-			String sql = "INSERT INTO Brands (Brand_ID, Brand_Name, Brand_Website, Brand_Address) VALUES (?,?,?,?)";
-			preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(2, Name);
-            preparedStatement.setString(3, Website);
-            preparedStatement.setString(4, Address);
+            
+            //To SQL portion
+			String sql = "INSERT INTO Brands (Brand_Name, Brand_Website, Brand_Address) VALUES (?,?,?)";
+			//Get the sql into the prepared statement then insert the values needed
+			preparedStatement = connection.prepareStatement(sql); 
+            preparedStatement.setString(1, Brand_Name);
+            preparedStatement.setString(2, Website);
+            preparedStatement.setString(3, Address);
             
             int row = preparedStatement.executeUpdate();
             if(row > 0) {
             	System.out.println("Tuple has been inserted successfully.");
             }
         }
+        //This is the end of the method
         finally {
             // Closing database connection
             try {
                 if(null != connection) {
  
                     // cleanup resources, once after processing
-                    resultSet.close();
                     preparedStatement.close();
  
                     // and then finally close connection
@@ -177,13 +184,141 @@ public class Database {
         }
 	}
 	
-	public static void insertProductTuple() {
-	
+	public static void insertProductTuple(String Prod_Name, String Type, String Spec_Section, String Description) throws SQLException {
+        //variables
+		Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        // Loading or 
+        // registering Oracle JDBC driver class
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        }
+        //Exception if the class is not found
+        catch(ClassNotFoundException cnfex) { 
+            System.out.println("Problem in loading or "
+                 + "registering MS Access JDBC driver"
+            		);
+           cnfex.printStackTrace();
+        }
+        //Exception if the initialization fails
+        catch (Exception e) { 
+            System.out.println("Problem in loading or "
+                    + "registering MS Access JDBC driver"
+            		+ e.getLocalizedMessage()
+               		);
+              e.printStackTrace();
+        }
+ 
+        // Opening database connection
+        try {
+            String msAccessDBName = "..//Database//SubmittalXpress.accdb";
+            String dbURL = "jdbc:ucanaccess://"
+                    + msAccessDBName;
+ 
+            // Create and 
+            // get connection using DriverManager class
+            //connection = DriverManager.getConnection(dbURL); 
+            connection = DriverManager.getConnection(dbURL);
+            
+            //To SQL portion
+			String sql = "INSERT INTO Product (Product_Name, Product_Type, Spec_Section, Description) VALUES (?,?,?,?)";
+			//Get the sql into the prepared statement then insert the values needed
+			preparedStatement = connection.prepareStatement(sql); 
+            preparedStatement.setString(1, Prod_Name);
+            preparedStatement.setString(2, Type);
+            preparedStatement.setString(3, Spec_Section);
+            preparedStatement.setString(4, Description);
+            
+            int row = preparedStatement.executeUpdate();
+            if(row > 0) {
+            	System.out.println("Tuple has been inserted successfully.");
+            }
+        }
+        //This is the end of the method
+        finally {
+            // Closing database connection
+            try {
+                if(null != connection) {
+ 
+                    // cleanup resources, once after processing
+                    preparedStatement.close();
+ 
+                    // and then finally close connection
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }
 	}
 	
-	public static void insertCutSheetTuple() {
-		
-		
+	public static void insertCutSheetTuple(int Brand_ID, int Product_ID, URL CS_url ) throws SQLException {
+	       //variables
+			Connection connection = null;
+	        PreparedStatement preparedStatement = null;
+	        // Loading or 
+	        // registering Oracle JDBC driver class
+	        try {
+	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+	        }
+	        //Exception if the class is not found
+	        catch(ClassNotFoundException cnfex) { 
+	            System.out.println("Problem in loading or "
+	                 + "registering MS Access JDBC driver"
+	            		);
+	           cnfex.printStackTrace();
+	        }
+	        //Exception if the initialization fails
+	        catch (Exception e) { 
+	            System.out.println("Problem in loading or "
+	                    + "registering MS Access JDBC driver"
+	            		+ e.getLocalizedMessage()
+	               		);
+	              e.printStackTrace();
+	        }
+	 
+	        // Opening database connection
+	        try {
+	            String msAccessDBName = "..//Database//SubmittalXpress.accdb";
+	            String dbURL = "jdbc:ucanaccess://"
+	                    + msAccessDBName;
+	 
+	            // Create and 
+	            // get connection using DriverManager class
+	            //connection = DriverManager.getConnection(dbURL); 
+	            connection = DriverManager.getConnection(dbURL);
+	            
+	            //To SQL portion
+				String sql = "INSERT INTO Product_Data (Brand_ID, Product_ID, Cut_Sheet) VALUES (?,?,?)";
+				//Get the sql into the prepared statement then insert the values needed
+				preparedStatement = connection.prepareStatement(sql); 
+	            preparedStatement.setInt(1, Brand_ID);
+	            preparedStatement.setInt(2, Product_ID);
+	            preparedStatement.setURL(3, CS_url);
+	            
+	            int row = preparedStatement.executeUpdate();
+	            if(row > 0) {
+	            	System.out.println("Tuple has been inserted successfully.");
+	            }
+	        }
+	        //This is the end of the method
+	        finally {
+	            // Closing database connection
+	            try {
+	                if(null != connection) {
+	 
+	                    // cleanup resources, once after processing
+	                    preparedStatement.close();
+	 
+	                    // and then finally close connection
+	                    connection.close();
+	                }
+	            }
+	            catch (SQLException sqlex) {
+	                sqlex.printStackTrace();
+	            }
+	        }
 	}
 
 	//Test query used to test if the connection to the database will work
@@ -195,22 +330,20 @@ public class Database {
  
         // Loading or 
         // registering Oracle JDBC driver class
-        // Step 1: Loading or 
-        // registering Oracle JDBC driver class
         try {
  
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         	
 
         }
-        catch(ClassNotFoundException cnfex) {
+        catch(ClassNotFoundException cnfex) { //Exception for if the class is not found
  
             System.out.println("Problem in loading or "
                  + "registering MS Access JDBC driver"
             		);
            cnfex.printStackTrace();
         }
-        catch (Exception e) {
+        catch (Exception e) { //Exception for initialization failure
             System.out.println("Problem in loading or "
                     + "registering MS Access JDBC driver"
             		+ e.getLocalizedMessage()
@@ -220,15 +353,14 @@ public class Database {
  
         // Opening database connection
         try {
-            String msAccessDBName = "C://Users//sgariano22//Desktop//SubmittalXpress"
-                    + "//SubmittalXpress//Database//SubmittalXpress.accdb";
+            String msAccessDBName = "..//..//SubmittalXpress//Database//SubmittalXpress.accdb";
             String dbURL = "jdbc:ucanaccess://"
                     + msAccessDBName;
  
             // Create and 
             // get connection using DriverManager class
-            //connection = DriverManager.getConnection(dbURL); 
-            connection = DriverManager.getConnection("jdbc:ucanaccess://C:\\Users\\sgariano22\\Desktop\\SubmitalXpress\\SubmittalXpress\\Database\\SubmittalXpress.accdb"); 
+            connection = DriverManager.getConnection(dbURL); 
+            //connection = DriverManager.getConnection("jdbc:ucanaccess://C:\\Users\\sgariano22\\Desktop\\SubmitalXpress\\SubmittalXpress\\Database\\SubmittalXpress.accdb"); 
             // Creating JDBC Statement 
             statement = connection.createStatement();
  
