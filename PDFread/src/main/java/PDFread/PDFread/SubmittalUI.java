@@ -9,11 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import java.awt.Font;
+import java.awt.List;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -44,6 +47,9 @@ public class SubmittalUI {
 	protected static SubmittalUI window = new SubmittalUI();
 	public PDFreader PDFtest;
 	private JProgressBar progressBar; 
+	
+	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -297,14 +303,31 @@ public class SubmittalUI {
 	        	    	textArea.append("\n");		
 	        	    	textArea.append("\n");
 	        	    	JCheckBox check = new JCheckBox("Keep");
+	        	    	check.addActionListener(actionListener);
+	        	    	CheckboxList.add(check);
 		        		checklistpanel.add(check);
 	        }
-	      }     	
+	      }
 	        
-	        public boolean isChecked() {
+	        
+	        ActionListener checkbox = new ActionListener() {
+	        
+	        public void actionPerformed(ActionEvent e) {
 	        	
-	        	return true; 
+	            for (JCheckBox checkBox : CheckboxList) {
+	                if (checkBox.isSelected()) {
+	                  
+	                    
+	                }
+	            }
+	            // TODO do something with infos
 	        }
+	        };
+	        
+	               
+	        
+	        
+	        
 };
 
 
