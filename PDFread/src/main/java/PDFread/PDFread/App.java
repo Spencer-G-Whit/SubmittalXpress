@@ -2,6 +2,9 @@ package PDFread.PDFread;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
+import javax.xml.crypto.Data;
+
 import java.net.URL;
 //http://www.pavilionconstruction.com/uploaded-files/Platinum%20Place/Drawings%206.4.14/2014%2005%2016%20Project%20Manual%20INCOMPLETE.pdf
 public class App 
@@ -37,7 +40,11 @@ public class App
     	
     	//Tests for Query
     	//Test for database connection
-    	//Database.testQuery();
+    	//Database.viewProducts("Pipe");
+    	//Database.viewProducts("Nuke");
+    	//Database.productQuery("Testies");
+    	//Database.cutSheetQuery("1","1");
+    	//Database.testQuery(); 
     	//Database.testQuery2();
     }
     
