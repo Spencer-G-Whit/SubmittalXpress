@@ -192,11 +192,13 @@ public class Database {
  
             // Executing SQL and
             // retrieve data
+            //In the where statement when p.Product_Type LIKE '% type %' is saying when that word is included any where in the Prodcut_Type
+            //Example ... LIKE '%ar%' would include anything with the combination of a and r
             resultSet = statement
                     .executeQuery("SELECT b.Brand_Name, p.Product_Name, p.Product_Type, p.Description  "
                     		+ "FROM Product_Data AS pd, Brands AS b, Product AS p "
                     		+ "WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
-                    		+ type
+                    		+ type 
                     		+"%'");
  
             System.out.println("Product Information:\n");
@@ -239,12 +241,14 @@ public class Database {
 	}
 	
 	
-	//Conditional will check to see which section this will be apart of 
-	public static void viewProducts(String str) {
+	//Conditional will check to see which section this will be apart of
+	//Then calls the product query function then to get the relevant product information
+	public static void productFilter(String str) {
 		str = str.toUpperCase();
 		
         //Each conditional will have its own query 
 		if(str.contains("PIPE") || str.contains("TUBE") || str.contains("FITTINGS")){
+			str = "PIPE";
 			productQuery(str); 
 			
 		}

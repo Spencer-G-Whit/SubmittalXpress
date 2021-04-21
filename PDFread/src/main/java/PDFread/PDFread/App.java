@@ -40,8 +40,8 @@ public class App
     	
     	//Tests for Query
     	//Test for database connection
-    	//Database.viewProducts("Pipe");
-    	//Database.viewProducts("Nuke");
+    	//Database.productFilter("Pipe");
+    	//Database.productFilter("Nuke");
     	//Database.productQuery("Testies");
     	//Database.cutSheetQuery("1","1");
     	//Database.testQuery(); 
