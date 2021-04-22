@@ -40,7 +40,9 @@ public class App
     	
     	//Tests for Query
     	//Test for database connection
+    	//System.out.print("First method");
     	//Database.productFilter("Pipe");
+    	//System.out.print("\nSecond method\n");
     	//Database.productFilter("Nuke");
     	//Database.productQuery("Testies");
     	//Database.cutSheetQuery("1","1");

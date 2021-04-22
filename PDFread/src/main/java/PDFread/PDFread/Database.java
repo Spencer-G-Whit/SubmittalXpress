@@ -54,9 +54,7 @@ public class Database {
 	//Function that will return the contents of P_Desc
 	public Vector<String> getP_Desc(){
 		return P_Desc;
-	}
-	
-	
+	}	
 	
 	//Function that will submit a query to the database to then retrieve product cutsheets (Product_Data table) from the arguments of brand ID and product ID
 	//Because of previous issues this cutsheet will be a url to the cutsheet
@@ -146,7 +144,7 @@ public class Database {
 	//Query to search for all pipe
 	// SELECT B.Brand_Name, P.Product_Name, P.Product_Type, P.Description
 	// FROM Product as P, Brand as B, Product_Data as PD
-	// WHERE PD.Brand_ID = B.Brand_ID and PD.Product_ID = P.Product_ID and P.Product_Type = "..."
+	// WHERE PD.Brand_ID = B.Brand_ID and PD.Product_ID = P.Product_ID and P.Product_Type LIKE or = "..."
 	////////
 	public static void productQuery(String type) {
 		// variables
@@ -198,8 +196,8 @@ public class Database {
                     .executeQuery("SELECT b.Brand_Name, p.Product_Name, p.Product_Type, p.Description  "
                     		+ "FROM Product_Data AS pd, Brands AS b, Product AS p "
                     		+ "WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
-                    		+ type 
-                    		+"%'");
+                    		+ type
+                    		+ "%'");
  
             System.out.println("Product Information:\n");
  
@@ -239,7 +237,6 @@ public class Database {
         }
         
 	}
-	
 	
 	//Conditional will check to see which section this will be apart of
 	//Then calls the product query function then to get the relevant product information
@@ -333,7 +330,7 @@ public class Database {
 		
 	}
 	
-	//Function that will insert information into one of the following tables (Brands - Product - Product_Data)
+	//Function that will insert information to make a tuple into the Brand table
 	public static void insertBrandTuple(String Brand_Name,String Website,String Address) throws SQLException {
         //variables
 		Connection connection = null;
@@ -402,6 +399,7 @@ public class Database {
         }
 	}
 	
+	//Function that will insert information to make a tuple into the Product table 
 	public static void insertProductTuple(String Prod_Name, String Type, String Spec_Section, String Description) throws SQLException {
         //variables
 		Connection connection = null;
@@ -471,6 +469,7 @@ public class Database {
         }
 	}
 	
+	//Function that will insert information to make a tuple into the Product_Data
 	public static void insertCutSheetTuple(int Brand_ID, int Product_ID, URL CS_url ) throws SQLException {
 	       //variables
 			Connection connection = null;
@@ -618,7 +617,7 @@ public class Database {
 	}
 	
 	//Test query used to test if the connection to the database will work
-		public static void testQuery2() {
+	public static void testQuery2() {
 			// variables
 	        Statement statement = null;
 	        ResultSet resultSet = null;
