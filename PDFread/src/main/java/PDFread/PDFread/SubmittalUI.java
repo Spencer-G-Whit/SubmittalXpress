@@ -10,13 +10,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
 import java.awt.Font;
-import java.awt.List;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -50,6 +47,10 @@ public class SubmittalUI extends Database {
 	private JButton Continue2;
 	private JFrame dataScrn;
 	private JPanel scrn2;
+	
+	private Vector<String> specSection = new Vector<String>();
+	private Vector<String> wholeSpec = new Vector<String>();
+	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
 	
 	/**
@@ -261,15 +262,14 @@ public class SubmittalUI extends Database {
 	        }
 	      }
 	        
-	        
 	        //TODO CheckBox action listener
 	        ActionListener checkbox = new ActionListener() {
 	        
 	        public void actionPerformed(ActionEvent e) {
 	        	
-	            for (JCheckBox checkBox : CheckboxList) {
-	                if (checkBox.isSelected()) {
-	                  //TODO something
+	            for (int i = 0; i < CheckboxList.size(); i++) {
+	                if (CheckboxList.get(i).isSelected() == true) {
+	                  specSection.add(CheckboxList.get(i).getText());
 	                }
 	            }
 	            //TODO something
@@ -287,7 +287,7 @@ public class SubmittalUI extends Database {
 			
 			JButton next = new JButton("Continue");
 			
-			JTextPane textPane = new JTextPane();
+			JTextArea textPane = new JTextArea();
 			
 			JLabel lblNewLabel = new JLabel("Database Info");
 			
@@ -320,9 +320,15 @@ public class SubmittalUI extends Database {
 						.addContainerGap())
 			);
 			dataScrn.getContentPane().setLayout(groupLayout);
+			textPane.setEditable(false);
 			
-			textPane.setText(Database.testQuery2());
+			//TODO set database text 
 			
+			wholeSpec.addAll(Database.productFilter(specSection.get(0)));
+			
+			for(int i = 0; i < wholeSpec.size(); i++) {
+			textPane.append(wholeSpec.get(i));
+			}
 		}
 	  
 	  
