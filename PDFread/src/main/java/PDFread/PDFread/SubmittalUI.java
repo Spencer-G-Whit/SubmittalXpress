@@ -30,7 +30,7 @@ import java.awt.SystemColor;
 import java.awt.FlowLayout;
 import javax.swing.JProgressBar;
 
-public class SubmittalUI {
+public class SubmittalUI extends Database {
 	
 	private JFrame frame;
 	private JFrame f;
@@ -196,7 +196,7 @@ public class SubmittalUI {
 	        		scrn2.setBounds(10, 10, 631, 453);
 	        		f.getContentPane().add(scrn2);
 	        		
-	        		JLabel lblNewLabel = new JLabel("Specification Sections");
+	        		JLabel lblNewLabel = new JLabel("");
 	        		
 	        	    textArea = new JTextArea("");
 	        	    Font newFont = new Font("SansSerif", Font.PLAIN, 14);
@@ -221,7 +221,6 @@ public class SubmittalUI {
 	        					.addGap(39)
 	        					.addComponent(checklistpanel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 	        					.addPreferredGap(ComponentPlacement.UNRELATED)
-	        					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
 	        					.addGap(88)
 	        					.addComponent(Continue2)
 	        					.addContainerGap(92, Short.MAX_VALUE))
@@ -238,12 +237,12 @@ public class SubmittalUI {
 	        							.addPreferredGap(ComponentPlacement.RELATED)
 	        							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 	        								.addComponent(checklistpanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-	        								.addComponent(textArea, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)))
 	        						.addGroup(gl_panel.createSequentialGroup()
 	        							.addGap(208)
 	        							.addComponent(Continue2)))
 	        					.addContainerGap(81, Short.MAX_VALUE))
-	        		);
+	        		)));
+	        		
 	        		checklistpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	        		
 	        		scrn2.setLayout(gl_panel);
@@ -253,10 +252,8 @@ public class SubmittalUI {
 	        public void appendSpec() {
 	        	
 	        	 for (int i = 0; i < PDFtest.D22Spec.size(); i++) {
-	        	    	textArea.append(PDFtest.D22Spec.elementAt(i));
-	        	    	textArea.append("\n");		
-	        	    	textArea.append("\n");
-	        	    	JCheckBox check = new JCheckBox("Keep");
+	        	 
+	        	    	JCheckBox check = new JCheckBox(PDFtest.D22Spec.elementAt(i));
 	        	    	check.addActionListener(checkbox);
 	        	    	CheckboxList.add(check);
 		        		checklistpanel.add(check);
@@ -264,7 +261,7 @@ public class SubmittalUI {
 	        }
 	      }
 	        
-	     
+	        
 	        //TODO CheckBox action listener
 	        ActionListener checkbox = new ActionListener() {
 	        
@@ -293,6 +290,8 @@ public class SubmittalUI {
 			JTextPane textPane = new JTextPane();
 			
 			JLabel lblNewLabel = new JLabel("Database Info");
+			
+			
 			GroupLayout groupLayout = new GroupLayout(dataScrn.getContentPane());
 			groupLayout.setHorizontalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
@@ -321,6 +320,9 @@ public class SubmittalUI {
 						.addContainerGap())
 			);
 			dataScrn.getContentPane().setLayout(groupLayout);
+			
+			textPane.setText(Database.testQuery2());
+			
 		}
 	  
 	  
@@ -374,7 +376,7 @@ public class SubmittalUI {
 					}
 			      
 	        } else if(a.getSource() == Continue2) {
-	        	System.out.print("Im working");
+	        	//System.out.print("Im working");
 	        	window.f.setVisible(false);
 	        	window.f.dispose();
 	        	DataBaseScreen();
