@@ -36,6 +36,25 @@ public class App
     	//Database.insertBrandTuple("TestBrand", null, null);
     	//Database.insertProductTuple("TestProd2", "Pipe", "22", "Long 12 diamter pipe");
     	//URL url = new URL("https://www.hunterindustries.com/sites/default/files/CA-Cutsheet-Pro-Spray-US.pdf");
+		///////////////////////////////////////////////////////////
+		// 1 = Mueller, 1 = pipe
+		URL url = new URL("https://muellerstreamline.com/?wpdmdl=521");
+		Database.insertBrandTuple("Mueller", null, null);
+		Database.insertProductTuple("TYPE L COPPER", "PIPE", "220000", null);
+		Database.insertCutSheetTuple(1, 1, url);
+		///////////////////////////////////////////////////////////
+		// 2 = Oatey,  
+		// https://www.oatey.com/products/oatey-955-lead-free-plumbing-wire-solder-216233657?filter=
+		URL url1 = new URL("https://muellerstreamline.com/?wpdmdl=521");
+		Database.insertBrandTuple("Mueller", null, null);
+		Database.insertProductTuple("TYPE L COPPER", "PIPE", "220000", null);
+		Database.insertCutSheetTuple(1, 1, url1);
+		///////////////////////////////////////////////////////////
+		// 3 = Watts
+		//https://www.watts.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/12332-source/es-lf3001a-pdf
+		///////////////////////////////////////////////////////////
+		// 4 = Pasco
+		// https://www.pascospecialty.com/specsheets/tss012.pdf
     	//Database.insertCutSheetTuple(2, 2, url);
     	
     	//Tests for Query
