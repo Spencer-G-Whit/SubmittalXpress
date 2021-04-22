@@ -188,9 +188,7 @@ public class Database {
             //In the where statement when p.Product_Type LIKE '% type %' is saying when that word is included any where in the Prodcut_Type
             //Example ... LIKE '%ar%' would include anything with the combination of a and r
             resultSet = statement
-                    .executeQuery("SELECT b.Brand_Name"
-                    		+ "FROM Product_Data AS pd, Brands AS b, Product AS p "
-                    		+ "WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
+                    .executeQuery("SELECT b.Brand_Name FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
                     		+ s
                     		+ "%'");
  
@@ -286,9 +284,7 @@ public class Database {
             //In the where statement when p.Product_Type LIKE '% type %' is saying when that word is included any where in the Prodcut_Type
             //Example ... LIKE '%ar%' would include anything with the combination of a and r
             resultSet = statement
-                    .executeQuery("SELECT b.Brand_Name, p.Product_Name, p.Product_Type, p.Description  "
-                    		+ "FROM Product_Data AS pd, Brands AS b, Product AS p "
-                    		+ "WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
+                    .executeQuery("SELECT b.Brand_Name, p.Product_Name, p.Product_Type, p.Description FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
                     		+ type
                     		+ "%'");
  
