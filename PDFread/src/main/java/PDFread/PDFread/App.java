@@ -39,7 +39,7 @@ public class App
     	//URL url = new URL("https://www.hunterindustries.com/sites/default/files/CA-Cutsheet-Pro-Spray-US.pdf");
 		///////////////////////////////////////////////////////////
 		// 1 = Mueller, 1 = pipe
-    	String temp = "..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf";
+    	//String temp = "..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf";
 //		File url = new File(temp);
 		//Database.insertBrandTuple("Mueller", null, null);
 		//Database.insertProductTuple("TYPE L COPPER", "PIPE", "220000", null);
@@ -47,11 +47,11 @@ public class App
 		///////////////////////////////////////////////////////////
 		// 2 = Oatey,  
 		// https://www.oatey.com/products/oatey-955-lead-free-plumbing-wire-solder-216233657?filter=
-		temp = "..\\PDFread\\src\\Product_data\\2.0 Oatey - raw_03_95-5 Lead Free Plumbing Solder_SUBMITTAL_001.pdf";
+		//temp = "..\\PDFread\\src\\Product_data\\2.0 Oatey - raw_03_95-5 Lead Free Plumbing Solder_SUBMITTAL_001.pdf";
 //		File url1 = new File(temp);
-		Database.insertBrandTuple("Oatey", null, null);
-		Database.insertProductTuple("SOLDER FLUX", "JOINING", "220000", null);
-		Database.insertCutSheetTuple(2, 2, temp);
+		//Database.insertBrandTuple("Oatey", null, null);
+		//Database.insertProductTuple("SOLDER FLUX", "JOINING", "220000", null);
+		//Database.insertCutSheetTuple(2, 2, temp);
 		///////////////////////////////////////////////////////////
 		// 3 = Watts
 		//https://www.watts.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/12332-source/es-lf3001a-pdf
@@ -62,6 +62,7 @@ public class App
     	
     	//Tests for Query
     	//Test for database connection
+    	//Database.getBrandID("Mueller");
     	//System.out.print("First method");
     	//Database.productFilter("Pipe");
     	//System.out.print("\nSecond method\n");
