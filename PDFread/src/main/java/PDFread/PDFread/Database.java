@@ -359,9 +359,12 @@ public class Database {
             System.out.println("Brand Information:\n");
  
             // processing returned data and printing into console
+            
             while(resultSet.next()) {
-                System.out.println(resultSet.getString(1));
-                brands.add(resultSet.getString(1));
+            	if(resultSet.getString(1).length()>0) {
+            		System.out.println(resultSet.getString(1));
+                	brands.add(resultSet.getString(1));
+            	}
             }
         }
         catch(SQLException sqlex){ // catch to see if it successfully goes through query
@@ -497,7 +500,7 @@ public class Database {
 		str = str.toUpperCase();
 		
         //Each conditional will have its own query 
-		if(str.contains("PIPE") || str.contains("TUBE") || str.contains("FITTINGS")){
+		if(str.contains("PIPE") || str.contains("TUBE")){
 			str = "PIPE";
 			productQuery(str);
 			return getBrandQuery(str);

@@ -50,6 +50,7 @@ public class SubmittalUI extends Database {
 	
 	private Vector<String> specSection = new Vector<String>();
 	private Vector<String> wholeSpec = new Vector<String>();
+	private Vector<Vector<String>> wholeSpecVec = new Vector<Vector<String>>();
 	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
 	
@@ -324,10 +325,25 @@ public class SubmittalUI extends Database {
 			
 			//TODO set database text 
 			
-			wholeSpec.addAll(Database.productFilter(specSection.get(0)));
+			// Double for loop to iterate through the wholeSpecVec double vector 
+			// and store each returned vector from the database
+			for (int i = 0; i< specSection.size(); i++) {
+				for (int j = 0; j < PDFtest.specInfo.size(); j++) {
+					if(PDFtest.specInfo.elementAt(j).contains(specSection.elementAt(i))) {
+						wholeSpecVec.add(Database.productFilter(PDFtest.specInfo.elementAt(j)));
+					}
+				}
+			}
 			
-			for(int i = 0; i < wholeSpec.size(); i++) {
-			textPane.append(wholeSpec.get(i));
+			//wholeSpec.addAll(Database.productFilter(specSection.get(0)));
+			
+			// Double for loop to iterate through wholeSpecVec double vector
+			// and append each element inside the vector of vectors
+			for(int i = 0; i < wholeSpecVec.size(); i++) {
+				for(int j = 0; j < wholeSpecVec.elementAt(i).size(); j++) {
+					textPane.append(wholeSpecVec.get(i).get(j));
+					textPane.append("\n");
+				}
 			}
 		}
 	  
