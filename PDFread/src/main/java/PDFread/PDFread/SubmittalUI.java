@@ -26,9 +26,11 @@ import javax.swing.JTextPane;
 import java.awt.SystemColor;
 import java.awt.FlowLayout;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 
 public class SubmittalUI extends Database {
 	
+	//swing components
 	private JFrame frame;
 	private JFrame f;
 	private static JTextArea textArea;
@@ -47,7 +49,9 @@ public class SubmittalUI extends Database {
 	private JButton Continue2;
 	private JFrame dataScrn;
 	private JPanel scrn2;
+	private JPanel scrn3;
 	
+	//data containers
 	private Vector<String> specSection = new Vector<String>();
 	private Vector<String> wholeSpec = new Vector<String>();
 	private Vector<Vector<String>> wholeSpecVec = new Vector<Vector<String>>();
@@ -246,7 +250,7 @@ public class SubmittalUI extends Database {
 	        		)));
 	        		
 	        		checklistpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-	        		
+	        	
 	        		scrn2.setLayout(gl_panel);
 	        		f.setVisible(true);
 	        	}
@@ -256,72 +260,77 @@ public class SubmittalUI extends Database {
 	        	 for (int i = 0; i < PDFtest.D22Spec.size(); i++) {
 	        	 
 	        	    	JCheckBox check = new JCheckBox(PDFtest.D22Spec.elementAt(i));
-	        	    	check.addActionListener(checkbox);
+	        	    	check.addActionListener(actionListener);
 	        	    	CheckboxList.add(check);
 		        		checklistpanel.add(check);
 		        		
 	        }
 	      }
 	        
-	        //TODO CheckBox action listener
-	        ActionListener checkbox = new ActionListener() {
+//	        //TODO CheckBox action listener
+//	        ActionListener checkbox = new ActionListener() {
+//	        
+//	        public void actionPerformed(ActionEvent e) {
+//	        	
+//	            for (int i = 0; i < CheckboxList.size(); i++) {
+//	                if (CheckboxList.get(i).isSelected() == true) {
+//	                  specSection.add(CheckboxList.get(i).getText());
+//	                }
+//	            }
+//	            //TODO something
+//	        }
 	        
-	        public void actionPerformed(ActionEvent e) {
-	        	
-	            for (int i = 0; i < CheckboxList.size(); i++) {
-	                if (CheckboxList.get(i).isSelected() == true) {
-	                  specSection.add(CheckboxList.get(i).getText());
-	                }
-	            }
-	            //TODO something
-	        }
-	        
-	  };
+//	  };
 	        
 	               
 	  public void DataBaseScreen() {
 		  
-		    dataScrn = new JFrame();
-		    dataScrn.setBounds(10, 10, 631, 453);
-		    dataScrn.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    dataScrn.setVisible(true);
+		  frame = new JFrame();
+			frame.setSize(660,500);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 			
-			JButton next = new JButton("Continue");
-			
-			JTextArea textPane = new JTextArea();
-			
-			JLabel lblNewLabel = new JLabel("Database Info");
-			
-			
-			GroupLayout groupLayout = new GroupLayout(dataScrn.getContentPane());
-			groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-					.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap(84, Short.MAX_VALUE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-								.addComponent(next)
-								.addContainerGap())
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-								.addComponent(textPane, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
-								.addGap(77))
-							.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-								.addGap(165))))
-			);
-			groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-					.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-						.addGap(29)
-						.addComponent(lblNewLabel)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(textPane, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-						.addComponent(next)
-						.addContainerGap())
-			);
-			dataScrn.getContentPane().setLayout(groupLayout);
-			textPane.setEditable(false);
+				
+				JButton next = new JButton("Continue");
+				
+				JLabel lblNewLabel = new JLabel("Database Info");
+				
+				JScrollPane scrollPane = new JScrollPane();
+				
+				
+				GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+				groupLayout.setHorizontalGroup(
+					groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(563, Short.MAX_VALUE)
+							.addComponent(next)
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(88)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 456, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(102, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(273)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(277, Short.MAX_VALUE))
+				);
+				groupLayout.setVerticalGroup(
+					groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(29)
+							.addComponent(lblNewLabel)
+							.addGap(18)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+							.addComponent(next)
+							.addContainerGap())
+				);
+				
+				JTextArea textPane = new JTextArea();
+				scrollPane.setViewportView(textPane);
+				textPane.setEditable(false);
+				frame.getContentPane().setLayout(groupLayout);
 			
 			//TODO set database text 
 			
@@ -400,6 +409,11 @@ public class SubmittalUI extends Database {
 			      
 	        } else if(a.getSource() == Continue2) {
 	        	//System.out.print("Im working");
+	        	for (int i = 0; i < CheckboxList.size(); i++) {
+		         if (CheckboxList.get(i).isSelected() == true) {
+		                specSection.add(CheckboxList.get(i).getText());
+		                }
+	        	}
 	        	window.f.setVisible(false);
 	        	window.f.dispose();
 	        	DataBaseScreen();
