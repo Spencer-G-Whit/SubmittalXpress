@@ -340,9 +340,10 @@ public class SubmittalUI extends Database {
 			// Double for loop to iterate through wholeSpecVec double vector
 			// and append each element inside the vector of vectors
 			for(int i = 0; i < wholeSpecVec.size(); i++) {
+				textPane.append(PDFtest.specInfo.elementAt(i) + "\n");
 				for(int j = 0; j < wholeSpecVec.elementAt(i).size(); j++) {
-					textPane.append(wholeSpecVec.get(i).get(j));
-					textPane.append("\n");
+					textPane.append("     - " + wholeSpecVec.get(i).get(j) + "\n");
+					//textPane.append("\n");
 				}
 			}
 		}
