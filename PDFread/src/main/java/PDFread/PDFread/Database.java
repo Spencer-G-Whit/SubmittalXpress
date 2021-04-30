@@ -305,6 +305,9 @@ public class Database {
         }
 	}
 	
+	//Function that will submit query to the database to retrieve brand names where Product_Type is s
+	//This Function is no longer needed since Product Query has a vector of brand names as well
+	//Use the getB_Name function to use the brand name vector
 	public static Vector<String> getBrandQuery(String s){
 		Vector<String> brands = new Vector<String>();
 		// variables for embedded sql
@@ -495,7 +498,7 @@ public class Database {
 	}
 	
 	//Conditional will check to see which section this will be apart of
-	//Then calls the product query function then to get the relevant product information
+	//Then calls the product query function (And BrandQuery function for now) then to get the relevant product information
 	public static Vector<String> productFilter(String str) {
 		str = str.toUpperCase();
 		
@@ -845,6 +848,7 @@ public class Database {
 
 	//Sourced from https://www.benchresources.net/jdbc-msaccess-database-connection-steps-in-java-8/
 	//Test query used to test if the connection to the database will work
+	//This function is just a test function and should not be used in the main application
 	public static void testQuery() throws SQLException {
 		// variables for embedded sql
         Connection connection = null;
@@ -924,6 +928,7 @@ public class Database {
 	
 	//Sourced from https://www.benchresources.net/jdbc-msaccess-database-connection-steps-in-java-8/
 	//Test query used to test if the connection to the database will work
+	//This function is just a test function and should not be used in the main application
 	public static void testQuery2() {
 		    // variables for embedded sql
 	        Statement statement = null;
