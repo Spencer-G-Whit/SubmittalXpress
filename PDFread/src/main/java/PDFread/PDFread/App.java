@@ -55,10 +55,17 @@ public class App
 		///////////////////////////////////////////////////////////
 		// 3 = Watts
 		//https://www.watts.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/12332-source/es-lf3001a-pdf
+    	//String temp2 = "..\\PDFread\\src\\Product_data\\3.0_Watts-ES-LF3001A.pdf";
+    	//Database.insertBrandTuple("Watts", null, null);
+    	//Database.insertProductTuple("DIELECTRIC FITTING", "DIELECTRIC", "22", null);
+    	//Database.insertCutSheetTuple(Database.getBrandID("Watts"), Database.getProductID("DIELECTRIC FITTING"), temp2);
 		///////////////////////////////////////////////////////////
 		// 4 = Pasco
-		// https://www.pascospecialty.com/specsheets/tss012.pdf
-    	//Database.insertCutSheetTuple(2, 2, url);
+		//https://www.pascospecialty.com/specsheets/tss012.pdf
+    	String temp3 = "..\\PDFread\\src\\Product_data\\4.0_Pasco-tss012.pdf";
+    	Database.insertBrandTuple("Pasco", null, null);
+    	Database.insertProductTuple("FLANGE ESCUTCHEON", "ESCUTCHEON", "220000", null);
+    	Database.insertCutSheetTuple(Database.getBrandID("Pasco"), Database.getProductID("FLANGE ESCUTCHEON"), temp3);
     	
     	//Tests for Query
     	//Test for database connection
