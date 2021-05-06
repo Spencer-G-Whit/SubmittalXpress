@@ -20,6 +20,8 @@ public class Database {
 	private static Vector<String> P_Type = new Vector<String>();
 	//Product Description
 	private  static Vector<String> P_Desc = new Vector<String>(); 
+	//Product Data Cutsheets
+	private  static Vector<String> Cutsheets = new Vector<String>(); 
 	
 	//Function that will put n into the vector B_Name
 	public static void setB_Name(String n) {
@@ -36,6 +38,10 @@ public class Database {
 	//Function that will put d into the vector P_Desc
 	public static void setP_Desc(String d){
 		P_Desc.add(d);
+	}
+	//Function that will put d into the vector Cutsheets
+	public static void setCutsheet(String c){
+		P_Desc.add(c);
 	}
 	
 	//Function that will return the contents of B_Name
@@ -54,6 +60,10 @@ public class Database {
 	public Vector<String> getP_Desc(){
 		return P_Desc;
 	}	
+	//Function that will return the contents of Cutsheets
+	public Vector<String> getCutsheet(){
+		return Cutsheets;
+	}		
 	
 	//The following Get, Query and Insert functions use code sourced from https://www.benchresources.net/jdbc-msaccess-database-connection-steps-in-java-8/
 	
@@ -278,6 +288,7 @@ public class Database {
             // processing returned data and printing into console
             while(resultSet.next()) {
                 System.out.println(resultSet.getString(1));
+                setCutsheet(resultSet.getString(1));
             }
         }
         catch(SQLException sqlex){ // catch to see if it successfully goes through query
