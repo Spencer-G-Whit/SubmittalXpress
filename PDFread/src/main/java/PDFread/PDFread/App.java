@@ -3,6 +3,7 @@ package PDFread.PDFread;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.xml.crypto.Data;
 
@@ -62,10 +63,10 @@ public class App
 		///////////////////////////////////////////////////////////
 		// 4 = Pasco
 		//https://www.pascospecialty.com/specsheets/tss012.pdf
-    	String temp3 = "..\\PDFread\\src\\Product_data\\4.0_Pasco-tss012.pdf";
-    	Database.insertBrandTuple("Pasco", null, null);
-    	Database.insertProductTuple("FLANGE ESCUTCHEON", "ESCUTCHEON", "220000", null);
-    	Database.insertCutSheetTuple(Database.getBrandID("Pasco"), Database.getProductID("FLANGE ESCUTCHEON"), temp3);
+//    	String temp3 = "..\\PDFread\\src\\Product_data\\4.0_Pasco-tss012.pdf";
+//    	Database.insertBrandTuple("Pasco", null, null);
+//    	Database.insertProductTuple("FLANGE ESCUTCHEON", "ESCUTCHEON", "220000", null);
+//    	Database.insertCutSheetTuple(Database.getBrandID("Pasco"), Database.getProductID("FLANGE ESCUTCHEON"), temp3);
     	
     	//Tests for Query
     	//Test for database connection
@@ -78,6 +79,13 @@ public class App
     	//Database.cutSheetQuery("1","1");
     	//Database.testQuery(); 
     	//Database.testQuery2();
+    	
+    	Vector<String> vecTitle = new Vector<String>();
+    	Vector<String> filePath = new Vector<String>();
+    	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
+    	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
+    	PDFwriter test = new PDFwriter(filePath, vecTitle);
+    	
     }
     
     
