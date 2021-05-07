@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Vector;
 
 
@@ -12,6 +13,7 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
@@ -24,12 +26,12 @@ public class PDFwriter {
 	//PDPage page = new PDPage();
 	//coversheet.addPage( page );
 	private PDFont font = PDType1Font.HELVETICA_BOLD;
-	
-	private PDDocument document = new PDDocument();
 	private PDPage page = new PDPage();
 	private String titleStr, bodyStr = "";
 	private Vector<String> filePathFromDataBase = new Vector<String>();
 	private Vector<String> subsectionTitles = new Vector<String>();
+	private int pageNumber = 0;
+	
 	
 
 	
@@ -41,19 +43,33 @@ public class PDFwriter {
 	
 	// Constructor
 	public PDFwriter(Vector<String> dbVec, Vector<String> subsecVec) throws IOException {
-		//doc.save("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
-		//call all our methods here
+		
 		filePathFromDataBase.addAll(dbVec);
 		subsectionTitles.addAll(subsecVec);
+		
 		//two for loops to create submittal without coversheet and TOC
 		for(int i = 0; i < subsectionTitles.size(); i++) {
 			writeSectionTitle(subsectionTitles.elementAt(i));
 			for(int j = 0; j < filePathFromDataBase.size(); j++) {
 				attachCutsheet(filePathFromDataBase.elementAt(j));
 			}
+			// Delete the working SubSection Title file
+			File file = new File("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
+			file.delete();
 		}
-		File file = new File("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
-		file.delete();
+		// Add Page numbers to our submittal
+		File file = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+        PDDocument document = PDDocument.load(file);
+        //addPageNumbers(PDDocument, "format style", X_Offset, Y_Offset) 
+        addPageNumbers(document,"Page {0}",60,35);
+        document.save(new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf"));
+        document.close();
+		
+        
+        // Need to create table of contents
+        
+        // Need to create Coversheet
+        
 	};
 	
 	
@@ -122,10 +138,25 @@ public class PDFwriter {
 		bodyStr = str.substring(lastIndex + 1, str.length());	
 	}
 	
-	
-	
-	// Methods
-	
+	//REF: https://stackoverflow.com/questions/16581471/adding-page-numbers-using-pdfbox
+	public static void addPageNumbers(PDDocument document, String numberingFormat, int offset_X, int offset_Y) throws IOException {
+        int page_counter = 1;
+        for(PDPage page : document.getPages()){
+            PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, false);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ITALIC, 12);
+            PDRectangle pageSize = page.getMediaBox();
+            float x = pageSize.getLowerLeftX();
+            float y = pageSize.getLowerLeftY();
+            contentStream.newLineAtOffset(x+ pageSize.getWidth()-offset_X, y+offset_Y);
+            String text = MessageFormat.format(numberingFormat,page_counter);
+            contentStream.showText(text);
+            contentStream.endText();
+            contentStream.close();
+            ++page_counter;
+        }
+    }
+
 	
 	
 }
