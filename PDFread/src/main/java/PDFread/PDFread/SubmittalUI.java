@@ -50,6 +50,7 @@ public class SubmittalUI extends Database {
 	private JFrame dataScrn;
 	private JPanel scrn2;
 	private JPanel scrn3;
+	private JButton next;
 	
 	//data containers
 	private Vector<String> specSection = new Vector<String>();
@@ -57,6 +58,8 @@ public class SubmittalUI extends Database {
 	private Vector<Vector<String>> wholeSpecVec = new Vector<Vector<String>>();
 	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
+	 
+	 ArrayList<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
 	
 	/**
 	 * Launch the application.
@@ -291,39 +294,51 @@ public class SubmittalUI extends Database {
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 			
-				
-				JButton next = new JButton("Continue");
+			    JCheckBox check = new JCheckBox("");
+			    
+			    next = new JButton("Create");
+				next.addActionListener(actionListener);
 				
 				JLabel lblNewLabel = new JLabel("Database Info");
 				
 				JScrollPane scrollPane = new JScrollPane();
+				
+				JPanel panel = new JPanel();
 				
 				
 				GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 				groupLayout.setHorizontalGroup(
 					groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap(563, Short.MAX_VALUE)
-							.addComponent(next)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(88)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 456, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(102, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(273)
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap(277, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED, 485, Short.MAX_VALUE)
+									.addComponent(next)
+									.addContainerGap())
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(10)
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 456, GroupLayout.PREFERRED_SIZE)
+									.addContainerGap(102, Short.MAX_VALUE))))
 				);
 				groupLayout.setVerticalGroup(
 					groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addGap(29)
 							.addComponent(lblNewLabel)
 							.addGap(18)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
-							.addComponent(next)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+									.addComponent(next)))
 							.addContainerGap())
 				);
 				
@@ -331,6 +346,7 @@ public class SubmittalUI extends Database {
 				scrollPane.setViewportView(textPane);
 				textPane.setEditable(false);
 				frame.getContentPane().setLayout(groupLayout);
+			
 			
 			//TODO set database text 
 			
@@ -351,6 +367,11 @@ public class SubmittalUI extends Database {
 			for(int i = 0; i < wholeSpecVec.size(); i++) {
 				textPane.append(PDFtest.specInfo.elementAt(i) + "\n");
 				for(int j = 0; j < wholeSpecVec.elementAt(i).size(); j++) {
+					check = new JCheckBox();
+					check.setText(wholeSpecVec.get(i).toString());
+					check.addActionListener(actionListener);
+					checkboxes.add(check);
+					panel.add(check);
 					textPane.append("     - " + wholeSpecVec.get(i).get(j) + "\n");
 					//textPane.append("\n");
 				}
@@ -417,6 +438,21 @@ public class SubmittalUI extends Database {
 	        	window.f.setVisible(false);
 	        	window.f.dispose();
 	        	DataBaseScreen();
+	        }else if(a.getSource() == next) {
+	        	specSection.clear();
+	        	for (int i = 0; i < checkboxes.size(); i++) {
+	        	if (checkboxes.get(i).isSelected() == true) {
+	        		 specSection.add(CheckboxList.get(i).getText());
+	        	}
+	        	
+	        } if(specSection.size() != 0) {
+	        	
+	        	
+	        	
+	        }
+	        	
+	        	
+	        	
 	        }
 	        	
 	        	}
