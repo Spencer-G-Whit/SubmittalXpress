@@ -462,8 +462,8 @@ public class SubmittalUI extends Database {
 		            	Vector<String> filePath = new Vector<String>();
 		            	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
 		            	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
-		            	PDFwriter test = new PDFwriter(filePath, vecTitle);
-						//PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
+		            	//PDFwriter test = new PDFwriter(Database.getCutsheet(), vecTitle);
+						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
 						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
