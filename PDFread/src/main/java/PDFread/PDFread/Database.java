@@ -41,7 +41,7 @@ public class Database {
 	}
 	//Function that will put d into the vector Cutsheets
 	public static void setCutsheet(String c){
-		P_Desc.add(c);
+		Cutsheets.add(c);
 	}
 	
 	//Function that will return the contents of B_Name
