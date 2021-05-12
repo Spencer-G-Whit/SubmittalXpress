@@ -321,8 +321,6 @@ public class Database {
 	}
 	
 	//Function that will submit query to the database to retrieve brand names where Product_Type is s
-	//This Function is no longer needed since Product Query has a vector of brand names as well
-	//Use the getB_Name function to use the brand name vector
 	public static Vector<String> getBrandQuery(String s){
 		Vector<String> brands = new Vector<String>();
 		// variables for embedded sql
@@ -411,6 +409,98 @@ public class Database {
 		
 		
 		return brands;
+		
+	}
+	
+	//Function that will submit query to the database to retrieve product names where Product_Type is s
+	public static Vector<String> getProductQuery(String s){
+		Vector<String> products = new Vector<String>();
+		// variables for embedded sql
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+ 
+        // Loading or 
+        // registering Oracle JDBC driver class
+        try {
+ 
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        	
+
+        }
+        catch(ClassNotFoundException cnfex) { //Exception for if the class is not found
+ 
+            System.out.println("Problem in loading or "
+                 + "registering MS Access JDBC driver"
+            		);
+           cnfex.printStackTrace();
+        }
+        catch (Exception e) { //Exception for initialization failure
+            System.out.println("Problem in loading or "
+                    + "registering MS Access JDBC driver"
+            		+ e.getLocalizedMessage()
+               		);
+              e.printStackTrace();
+        }
+ 
+        // Opening database connection
+        try {
+            String msAccessDBName = "..//..//SubmittalXpress//Database//SubmittalXpress.accdb";
+            String dbURL = "jdbc:ucanaccess://"
+                    + msAccessDBName;
+ 
+            // Create and 
+            // get connection using DriverManager class
+            connection = DriverManager.getConnection(dbURL); 
+            // Creating JDBC Statement 
+            statement = connection.createStatement();
+ 
+            // Executing SQL and
+            // retrieve data
+            //In the where statement when p.Product_Type LIKE '% type %' is saying when that word is included any where in the Prodcut_Type
+            //Example ... LIKE '%ar%' would include anything with the combination of a and r
+            resultSet = statement
+                    .executeQuery("SELECT p.Product_Name FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
+                    		+ s
+                    		+ "%'");
+ 
+            System.out.println("Brand Information:\n");
+ 
+            // processing returned data and printing into console
+            
+            while(resultSet.next()) {
+            	if(resultSet.getString(1).length()>0) {
+            		System.out.println(resultSet.getString(1));
+                	products.add(resultSet.getString(1));
+            	}
+            }
+        }
+        catch(SQLException sqlex){ // catch to see if it successfully goes through query
+            sqlex.printStackTrace();
+            System.out.println("We got past the connection");
+        }
+        finally {
+            // Closing database connection
+            try {
+                if(null != connection) {
+ 
+                    // cleanup resources, once after processing
+                    resultSet.close();
+                    statement.close();
+ 
+                    // and then finally close connection
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }
+        
+		
+		
+		
+		return products;
 		
 	}
 	
@@ -516,153 +606,292 @@ public class Database {
 	//Then calls the product query function (And BrandQuery function for now) then to get the relevant product information
 	public static Vector<String> productFilter(String str) {
 		str = str.toUpperCase();
-		return filter(str, 0);
+		return filter(str, false);
 		
 		
 	}
 
 	public static Vector<String> filter(String str, Boolean b){
 		
-        //Each conditional will have its own query 
-		if(str.contains("PIPE") || str.contains("TUBE")){
-			str = "PIPE";
-			// if this is a product query, then return product name vector
-			if(b == false) {
-				return getProductQuery(str);
-			}
-			// otherwise return brand name vector
-			else {
-				return getBrandQuery(str);
-			}
-			;
-			
-		}
-		else if(str.contains("JOINING")){
-			str = "JOINING";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("DIELECTRIC")){
-			str = "DIELECTRIC";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("ESCUTCHEON")){
-			str = "ESCUTCHEON";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("LIQUID-IN-GLASS") ||str.contains("THERMOMETER")) {
-			str = "THERMOMETER";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("THERMOWELL")) {
-			str = "THERMOWELL";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("PRESSURE GAGE")) {
-			str = "PRESSURE GAGE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("GAGE ATTACH")) {
-			str = "GAGE ATTACH";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		//////////////////////////////////////////
-		// VALVES
-		//////////////////////////////////////////
-		else if(str.contains("BALL VALVE")) {
-			str = "BALL VALVE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("GATE VALVE")) {
-			str = "GATE VALVE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("BALANCING VALVE")) {
-			str = "BALANCING VALVE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("CHECK VALVE")) {
-			str = "CHECK VALVE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("METAL PIPE HANGER")) {
-			str = "METAL PIPE HANGER";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("THERMAL-HANGER") || str.contains("SHIELD INSERT") || str.contains("THERMAL HANGER")) {
-			str = "THERMAL-HANGER";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("FASTENER SYSTEM")) {
-			str = "FASTENER SYSTEM";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("EQUIPMENT LABEL")) {
-			str = "EQUIPMENT LABEL";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("WARNING SIGN")) {
-			str = "WARNING SIGN";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("PIPE LABEL")) {
-			str = "PIPE LABEL";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("INSULATION MATERIAL")) {
-			str = "INSULATION MATERIAL";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("INSULATION CEMENT")) {
-			str = "INSULATION CEMENT";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("ADHESIVE")) {
-			str = "ADHESIVE";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("MASTIC")) {
-			str = "MASTIC";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("SEALANT")) {
-			str = "SEALANT";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		else if(str.contains("FACTORY-APPLIED") || str.contains("FACTORY APPLIED")) {
-			str = "FACTORY APPLIED";
-			productQuery(str); 
-			//return getBrandQuery(str);
-		}
-		//else case for product data not stored in the database
-		else {
-			//provide something for the UI to tell the user that product data for this item does not exist in out database
-			Vector<String> endStatement = new Vector<String>();
-			endStatement.add("The following does not have product data in the database: |" + str + "|");
-			  //System.out.println("The following does not have product data in the database: |" + str + "|");
-			  //return endStatement;
-		}
+		//Each conditional will have its own query 
+				if(str.contains("PIPE") || str.contains("TUBE")){
+					str = "PIPE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+					
+				}
+				else if(str.contains("JOINING")){
+					str = "JOINING";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("DIELECTRIC")){
+					str = "DIELECTRIC";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("ESCUTCHEON")){
+					str = "ESCUTCHEON";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("LIQUID-IN-GLASS") ||str.contains("THERMOMETER")) {
+					str = "THERMOMETER";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("THERMOWELL")) {
+					str = "THERMOWELL";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("PRESSURE GAGE")) {
+					str = "PRESSURE GAGE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("GAGE ATTACH")) {
+					str = "GAGE ATTACH";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				//////////////////////////////////////////
+				// VALVES
+				//////////////////////////////////////////
+				else if(str.contains("BALL VALVE")) {
+					str = "BALL VALVE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("GATE VALVE")) {
+					str = "GATE VALVE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("BALANCING VALVE")) {
+					str = "BALANCING VALVE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("CHECK VALVE")) {
+					str = "CHECK VALVE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("METAL PIPE HANGER")) {
+					str = "METAL PIPE HANGER";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("THERMAL-HANGER") || str.contains("SHIELD INSERT") || str.contains("THERMAL HANGER")) {
+					str = "THERMAL-HANGER";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("FASTENER SYSTEM")) {
+					str = "FASTENER SYSTEM";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("EQUIPMENT LABEL")) {
+					str = "EQUIPMENT LABEL";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("WARNING SIGN")) {
+					str = "WARNING SIGN";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("PIPE LABEL")) {
+					str = "PIPE LABEL";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("INSULATION MATERIAL")) {
+					str = "INSULATION MATERIAL";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("INSULATION CEMENT")) {
+					str = "INSULATION CEMENT";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("ADHESIVE")) {
+					str = "ADHESIVE";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("MASTIC")) {
+					str = "MASTIC";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("SEALANT")) {
+					str = "SEALANT";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				else if(str.contains("FACTORY-APPLIED") || str.contains("FACTORY APPLIED")) {
+					str = "FACTORY APPLIED";
+					// if this is a product query, then return product name vector
+					if(!b) {
+						return getProductQuery(str);
+					}
+					// otherwise return brand name vector
+					else {
+						return getBrandQuery(str);
+					}
+				}
+				//else case for product data not stored in the database
+				else {
+					//provide something for the UI to tell the user that product data for this item does not exist in out database
+					Vector<String> endStatement = new Vector<String>();
+					endStatement.add("The following does not have product data in the database: |" + str + "|");
+					  //System.out.println("The following does not have product data in the database: |" + str + "|");
+					  return endStatement;
+				}
+				
+				
 		
 		
 	}
