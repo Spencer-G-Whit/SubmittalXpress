@@ -238,8 +238,9 @@ public class Database {
 	}
 
 	//Function that will submit a query to the database to then retrieve product cutsheets (Product_Data table) from the arguments of brand ID and product ID
-	//Because of previous issues this cutsheet will be a url to the cutsheet
+	//This function adds to the class variable cutsheets
 	public static void cutSheetQuery(int bID, int pID) {
+		
 		// variables for embedded sql
         Connection connection = null;
         Statement statement = null;
@@ -504,6 +505,90 @@ public class Database {
 		
 	}
 	
+	//Function that will submit a query to the database to then retrieve product cutsheets (Product_Data table) from the arguments of brand ID and product ID
+	//This function will return a vector of strings that are the cutsheet urls
+	public static Vector<String> getCutSheetQuery(int bID, int pID) {
+		Vector<String> cutsheets = new Vector<String>();
+		// variables for embedded sql
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+ 
+        // Loading or 
+        // registering Oracle JDBC driver class
+        try {
+ 
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        	
+
+        }
+        catch(ClassNotFoundException cnfex) { //Exception for if the class is not found
+ 
+            System.out.println("Problem in loading or "
+                 + "registering MS Access JDBC driver"
+            		);
+           cnfex.printStackTrace();
+        }
+        catch (Exception e) { //Exception for initialization failure
+            System.out.println("Problem in loading or "
+                    + "registering MS Access JDBC driver"
+            		+ e.getLocalizedMessage()
+               		);
+              e.printStackTrace();
+        }
+ 
+        // Opening database connection
+        try {
+            String msAccessDBName = "..//..//SubmittalXpress//Database//SubmittalXpress.accdb";
+            String dbURL = "jdbc:ucanaccess://"
+                    + msAccessDBName;
+ 
+            // Create and 
+            // get connection using DriverManager class
+            connection = DriverManager.getConnection(dbURL); 
+            // Creating JDBC Statement 
+            statement = connection.createStatement();
+ 
+            // Executing SQL and
+            // retrieve data
+            resultSet = statement
+                    .executeQuery("SELECT pd.Cut_Sheet FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_ID = '" +
+                    		 String.valueOf(pID) +
+                    		"' and b.Brand_ID = '" +
+                    		 String.valueOf(bID) +
+                    		"'");
+ 
+            System.out.println("Cutsheet:");
+ 
+            // processing returned data and printing into console
+            while(resultSet.next()) {
+                System.out.println(resultSet.getString(1));
+                cutsheets.add(resultSet.getString(1));
+            }
+        }
+        catch(SQLException sqlex){ // catch to see if it successfully goes through query
+            sqlex.printStackTrace();
+            System.out.println("We got past the connection");
+        }
+        finally {
+            // Closing database connection
+            try {
+                if(null != connection) {
+ 
+                    // cleanup resources, once after processing
+                    resultSet.close();
+                    statement.close();
+ 
+                    // and then finally close connection
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }
+        return cutsheets;
+	}
 	
 	//Function that will submit a query to the database which will return product information, including the brand name based off of product type
 	////////
