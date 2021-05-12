@@ -12,65 +12,6 @@ import java.util.Vector;
 
 
 public class Database {
-	//Name of the brands
-	private static Vector<String> B_Name = new Vector<String>();
-	//Name of the products
-	private  static Vector<String> P_Name = new Vector<String>();
-	//The type of products
-	private static Vector<String> P_Type = new Vector<String>();
-	//Product Description
-	private  static Vector<String> P_Desc = new Vector<String>(); 
-	//Product Data Cutsheets
-	private  static Vector<String> Cutsheets = new Vector<String>(); 
-	
-	//Function that will put n into the vector B_Name
-	public static void setB_Name(String n) {
-		B_Name.add(n);
-	}
-	//Function that will put n into the vector P_Name
-	public static void setP_Name(String n) {
-		P_Name.add(n);
-	}
-	//Function that will put t into the vector P_Type
-	public static void setP_Type(String t) {
-		P_Type.add(t);
-	}
-	//Function that will put d into the vector P_Desc
-	public static void setP_Desc(String d){
-		P_Desc.add(d);
-	}
-	//Function that will put d into the vector Cutsheets
-	public static void setCutsheet(String c){
-		Cutsheets.add(c);
-	}
-	
-	//Function that will return the contents of B_Name
-	public static Vector<String> getB_Name() {
-		return B_Name;
-	}
-	//Function that will return the contents of P_Name
-	public static Vector<String> getP_Name() {
-		return P_Name;
-	}
-	//Function that will return the contents of P_Type
-	public static Vector<String> getP_Type(){
-		return P_Type;
-	}
-	//Function that will return the contents of P_Desc
-	public static Vector<String> getP_Desc(){
-		return P_Desc;
-	}	
-	//Function that will return the contents of Cutsheets
-	public static Vector<String> getCutsheet(){
-		return Cutsheets;
-	}		
-	public static void clearB_Name() {
-        B_Name.clear();
-    }
-    public static void clearP_Name() {
-        P_Name.clear();
-    }
-	
 	//The following Get, Query and Insert functions use code sourced from https://www.benchresources.net/jdbc-msaccess-database-connection-steps-in-java-8/
 	
 	//Function that will return ID from a query that will Select Product_ID From Product Where the Product_Name = n (and possibly description from Product in the future?)
@@ -237,90 +178,6 @@ public class Database {
 		return bID;
 	}
 
-	//Function that will submit a query to the database to then retrieve product cutsheets (Product_Data table) from the arguments of brand ID and product ID
-	//This function adds to the class variable cutsheets
-	public static void cutSheetQuery(int bID, int pID) {
-		
-		// variables for embedded sql
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
- 
-        // Loading or 
-        // registering Oracle JDBC driver class
-        try {
- 
-            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-        	
-
-        }
-        catch(ClassNotFoundException cnfex) { //Exception for if the class is not found
- 
-            System.out.println("Problem in loading or "
-                 + "registering MS Access JDBC driver"
-            		);
-           cnfex.printStackTrace();
-        }
-        catch (Exception e) { //Exception for initialization failure
-            System.out.println("Problem in loading or "
-                    + "registering MS Access JDBC driver"
-            		+ e.getLocalizedMessage()
-               		);
-              e.printStackTrace();
-        }
- 
-        // Opening database connection
-        try {
-            String msAccessDBName = "..//..//SubmittalXpress//Database//SubmittalXpress.accdb";
-            String dbURL = "jdbc:ucanaccess://"
-                    + msAccessDBName;
- 
-            // Create and 
-            // get connection using DriverManager class
-            connection = DriverManager.getConnection(dbURL); 
-            // Creating JDBC Statement 
-            statement = connection.createStatement();
- 
-            // Executing SQL and
-            // retrieve data
-            resultSet = statement
-                    .executeQuery("SELECT pd.Cut_Sheet FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_ID = '" +
-                    		 String.valueOf(pID) +
-                    		"' and b.Brand_ID = '" +
-                    		 String.valueOf(bID) +
-                    		"'");
- 
-            System.out.println("Cutsheet:");
- 
-            // processing returned data and printing into console
-            while(resultSet.next()) {
-                System.out.println(resultSet.getString(1));
-                setCutsheet(resultSet.getString(1));
-            }
-        }
-        catch(SQLException sqlex){ // catch to see if it successfully goes through query
-            sqlex.printStackTrace();
-            System.out.println("We got past the connection");
-        }
-        finally {
-            // Closing database connection
-            try {
-                if(null != connection) {
- 
-                    // cleanup resources, once after processing
-                    resultSet.close();
-                    statement.close();
- 
-                    // and then finally close connection
-                    connection.close();
-                }
-            }
-            catch (SQLException sqlex) {
-                sqlex.printStackTrace();
-            }
-        }
-	}
-	
 	//Function that will submit query to the database to retrieve brand names where Product_Type is s
 	public static Vector<String> getBrandQuery(String s){
 		Vector<String> brands = new Vector<String>();
@@ -590,14 +447,10 @@ public class Database {
         return cutsheets;
 	}
 	
-	//Function that will submit a query to the database which will return product information, including the brand name based off of product type
-	////////
-	//Query to search for all pipe
-	// SELECT B.Brand_Name, P.Product_Name, P.Product_Type, P.Description
-	// FROM Product as P, Brand as B, Product_Data as PD
-	// WHERE PD.Brand_ID = B.Brand_ID and PD.Product_ID = P.Product_ID and P.Product_Type LIKE or = "..."
-	////////
-	public static void productQuery(String type) {
+	//Function that will submit a query to the database which gets product descriptions
+	//This function will return a vector of strings that are the product descriptions
+	public static Vector<String> getProduct_DescQuery(String type) {
+		Vector<String> descriptions = new Vector<String>();
 		// variables for embedded sql
         Connection connection = null;
         Statement statement = null;
@@ -644,7 +497,7 @@ public class Database {
             //In the where statement when p.Product_Type LIKE '% type %' is saying when that word is included any where in the Prodcut_Type
             //Example ... LIKE '%ar%' would include anything with the combination of a and r
             resultSet = statement
-                    .executeQuery("SELECT b.Brand_Name, p.Product_Name, p.Product_Type, p.Description FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
+                    .executeQuery("SELECT p.Description FROM Product_Data AS pd, Brands AS b, Product AS p WHERE pd.Brand_ID = b.Brand_ID and pd.Product_ID = p.Product_ID and p.Product_Type LIKE '%"
                     		+ type
                     		+ "%'");
  
@@ -652,14 +505,8 @@ public class Database {
  
             // processing returned data and printing into console
             while(resultSet.next()) {
-                System.out.println(resultSet.getString(1) + "\t" + 
-                        resultSet.getString(2) + "\t" + 
-                        resultSet.getString(3) + "\t" +
-                        resultSet.getString(4));
-                setB_Name(resultSet.getString(1));
-                setP_Name(resultSet.getString(2));
-                setP_Type(resultSet.getString(3));
-                setP_Desc(resultSet.getString(4));
+                System.out.println(resultSet.getString(1));
+                descriptions.add(resultSet.getString(1));
 
             }
         }
@@ -684,21 +531,22 @@ public class Database {
                 sqlex.printStackTrace();
             }
         }
-        
+        return descriptions;
 	}
 	
-	//Conditional will check to see which section this will be apart of
-	//Then calls the product query function (And BrandQuery function for now) then to get the relevant product information
+	//Method that will call filter() with boolean argument set to false so that filter method will call getProductQuery
 	public static Vector<String> productFilter(String str) {
 		str = str.toUpperCase();
 		return filter(str, false);
 	}
 	
+	//Method that will call filter() with boolean argument set to true so that the method will call getBrandQuery
 	public static Vector<String> brandFilter(String str) {
 		str = str.toUpperCase();
 		return filter(str, true);
 	}
 
+	//Method takes in a string and a boolean which then checks the conditional based off the string and then a conditional that checks the boolean calling either getProdcutQuery or getBrandQuery
 	public static Vector<String> filter(String str, Boolean b){
 		
 		//Each conditional will have its own query 
@@ -983,6 +831,7 @@ public class Database {
 		
 		
 	}
+	
 	//Function that will insert information to make a tuple into the Brand table
 	public static void insertBrandTuple(String Brand_Name,String Website,String Address) throws SQLException {
 		// variables for embedded sql
