@@ -57,6 +57,8 @@ public class SubmittalUI extends Database {
 	private Vector<String> wholeSpec = new Vector<String>();
 	private Vector<Vector<String>> wholeBrandVec = new Vector<Vector<String>>();
 	private Vector<Vector<String>> wholeProductVec = new Vector<Vector<String>>();
+	private Vector<Vector<String>> wholeCutSheetVec = new Vector<Vector<String>>();
+	private Vector<Vector<String>> writerCutSheetVec = new Vector<Vector<String>>();
 	private Vector<String> subSecTitles = new Vector<String>();
 	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
@@ -362,12 +364,12 @@ public class SubmittalUI extends Database {
 						subSecTitles.add(PDFtest.specInfo.elementAt(j));
 					}
 				}
-				
 			}
 			
 			for(int i = 0; i<wholeBrandVec.size(); i++) {
 				for(int j = 0; j < wholeBrandVec.elementAt(i).size(); j++) {
-					Database.cutSheetQuery(Database.getBrandID(wholeBrandVec.get(i).get(j)), Database.getProductID(wholeProductVec.get(i).get(j)));
+					//Database.cutSheetQuery(Database.getBrandID(wholeBrandVec.get(i).get(j)), Database.getProductID(wholeProductVec.get(i).get(j)));
+					wholeCutSheetVec.add(Database.getCutSheetQuery(Database.getBrandID(wholeBrandVec.get(i).get(j)), Database.getProductID(wholeProductVec.get(i).get(j))));
 				}
 	  		}
 			
@@ -451,27 +453,33 @@ public class SubmittalUI extends Database {
 	        	DataBaseScreen();
 	        } else if(a.getSource() == next) {
 	        	specSection.clear();
+	        	//int count = 0;
 	        	for (int i = 0; i < checkboxes.size(); i++) {
 	        		if (checkboxes.get(i).isSelected() == true) {
-	        			specSection.add(CheckboxList.get(i).getText());
+	        			specSection.add(subSecTitles.get(i));
+	        			//for(int j = 0; j < wholeCutSheetVec.elementAt(i).size(); j++) {
+	        			writerCutSheetVec.add(wholeCutSheetVec.elementAt(i));
+	        			//count++;
+	        			//}	
 	        		}
 	        	
 	        	} if(specSection.size() != 0) {
 	        	
 		        	try {
-		        		Vector<String> vecTitle = new Vector<String>();
-		            	Vector<String> filePath = new Vector<String>();
-		            	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
-		            	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
-		            	//PDFwriter test = new PDFwriter(Database.getCutsheet(), vecTitle);
-		            	Vector<String> dbVec = new Vector<String>();
-		            	dbVec.addAll(Database.getCutsheet());
-						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), subSecTitles);
-						
+//		        		Vector<String> vecTitle = new Vector<String>();
+//		            	Vector<String> filePath = new Vector<String>();
+//		            	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
+//		            	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
+//		            	//PDFwriter test = new PDFwriter(Database.getCutsheet(), vecTitle);
+//		            	Vector<String> dbVec = new Vector<String>();
+//		            	dbVec.addAll(Database.getCutsheet());
+						PDFwriter submittal = new PDFwriter(writerCutSheetVec, specSection);
+						writerCutSheetVec.clear();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 				}
+		        	
 	        	
 	        	
 	        }

@@ -28,7 +28,7 @@ public class PDFwriter {
 	private PDFont font = PDType1Font.HELVETICA_BOLD;
 	private PDPage page = new PDPage();
 	private String titleStr, bodyStr = "";
-	private Vector<String> filePathFromDataBase = new Vector<String>();
+	private Vector<Vector<String>> filePathFromDataBase = new Vector<Vector<String>>();
 	private Vector<String> subsectionTitles = new Vector<String>();
 	private int pageNumber = 0;
 	
@@ -42,7 +42,7 @@ public class PDFwriter {
    
 	
 	// Constructor
-	public PDFwriter(Vector<String> dbVec, Vector<String> subsecVec) throws IOException {
+	public PDFwriter(Vector<Vector<String>> dbVec, Vector<String> subsecVec) throws IOException {
 		//Make sure we aren't pulling pri-ori files
 		File reset = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
 		reset.delete();
@@ -53,8 +53,8 @@ public class PDFwriter {
 		//two for loops to create submittal without coversheet and TOC
 		for(int i = 0; i < subsectionTitles.size(); i++) {
 			writeSectionTitle(subsectionTitles.elementAt(i));
-			for(int j = 0; j < filePathFromDataBase.size(); j++) {
-				attachCutsheet(filePathFromDataBase.elementAt(j));
+			for(int j = 0; j < filePathFromDataBase.elementAt(i).size(); j++) {
+				attachCutsheet(filePathFromDataBase.elementAt(i).elementAt(j),j);
 			}
 			// Delete the working SubSection Title file
 			File file = new File("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
@@ -76,13 +76,13 @@ public class PDFwriter {
 	};
 	
 	
-	public void attachCutsheet(String path) throws IOException {
+	public void attachCutsheet(String path, int startCount) throws IOException {
+		
+		PDFMergerUtility PDFmerger = new PDFMergerUtility();
+		File file = new File(path);
 		
 		boolean pdfFile = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf").createNewFile();
-		if(!pdfFile) {
-			PDFMergerUtility PDFmerger = new PDFMergerUtility();
-			File file = new File(path);
-			
+		if(!pdfFile && startCount == 0) {
 			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
 			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
 			PDFmerger.addSource(file);
@@ -93,10 +93,14 @@ public class PDFwriter {
 //			File tempFile2 = new File("..\\\\PDFread\\\\src\\\\main\\\\output\\\\test_submittal.pdf");
 //			tempFile1.renameTo(tempFile2);
 		}
-		else {
-			PDFMergerUtility PDFmerger = new PDFMergerUtility();
+		else if(!pdfFile && startCount != 0) {
+			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+			PDFmerger.addSource(file);
 			PDFmerger.setDestinationFileName("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
-			File file = new File(path);
+			PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		}
+		else {
+			PDFmerger.setDestinationFileName("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
 			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
 			PDFmerger.addSource(file);
 			PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
