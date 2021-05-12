@@ -45,25 +45,31 @@ public class Database {
 	}
 	
 	//Function that will return the contents of B_Name
-	public Vector<String> getB_Name() {
+	public static Vector<String> getB_Name() {
 		return B_Name;
 	}
 	//Function that will return the contents of P_Name
-	public Vector<String> getP_Name() {
+	public static Vector<String> getP_Name() {
 		return P_Name;
 	}
 	//Function that will return the contents of P_Type
-	public Vector<String> getP_Type(){
+	public static Vector<String> getP_Type(){
 		return P_Type;
 	}
 	//Function that will return the contents of P_Desc
-	public Vector<String> getP_Desc(){
+	public static Vector<String> getP_Desc(){
 		return P_Desc;
 	}	
 	//Function that will return the contents of Cutsheets
-	public Vector<String> getCutsheet(){
+	public static Vector<String> getCutsheet(){
 		return Cutsheets;
 	}		
+	public static void clearB_Name() {
+        B_Name.clear();
+    }
+    public static void clearP_Name() {
+        P_Name.clear();
+    }
 	
 	//The following Get, Query and Insert functions use code sourced from https://www.benchresources.net/jdbc-msaccess-database-connection-steps-in-java-8/
 	
@@ -510,48 +516,61 @@ public class Database {
 	//Then calls the product query function (And BrandQuery function for now) then to get the relevant product information
 	public static Vector<String> productFilter(String str) {
 		str = str.toUpperCase();
+		return filter(str, 0);
+		
+		
+	}
+
+	public static Vector<String> filter(String str, Boolean b){
 		
         //Each conditional will have its own query 
 		if(str.contains("PIPE") || str.contains("TUBE")){
 			str = "PIPE";
-			productQuery(str);
-			return getBrandQuery(str);
+			// if this is a product query, then return product name vector
+			if(b == false) {
+				return getProductQuery(str);
+			}
+			// otherwise return brand name vector
+			else {
+				return getBrandQuery(str);
+			}
+			;
 			
 		}
 		else if(str.contains("JOINING")){
 			str = "JOINING";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("DIELECTRIC")){
 			str = "DIELECTRIC";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("ESCUTCHEON")){
 			str = "ESCUTCHEON";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("LIQUID-IN-GLASS") ||str.contains("THERMOMETER")) {
 			str = "THERMOMETER";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("THERMOWELL")) {
 			str = "THERMOWELL";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("PRESSURE GAGE")) {
 			str = "PRESSURE GAGE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("GAGE ATTACH")) {
 			str = "GAGE ATTACH";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		//////////////////////////////////////////
 		// VALVES
@@ -559,82 +578,82 @@ public class Database {
 		else if(str.contains("BALL VALVE")) {
 			str = "BALL VALVE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("GATE VALVE")) {
 			str = "GATE VALVE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("BALANCING VALVE")) {
 			str = "BALANCING VALVE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("CHECK VALVE")) {
 			str = "CHECK VALVE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("METAL PIPE HANGER")) {
 			str = "METAL PIPE HANGER";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("THERMAL-HANGER") || str.contains("SHIELD INSERT") || str.contains("THERMAL HANGER")) {
 			str = "THERMAL-HANGER";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("FASTENER SYSTEM")) {
 			str = "FASTENER SYSTEM";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("EQUIPMENT LABEL")) {
 			str = "EQUIPMENT LABEL";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("WARNING SIGN")) {
 			str = "WARNING SIGN";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("PIPE LABEL")) {
 			str = "PIPE LABEL";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("INSULATION MATERIAL")) {
 			str = "INSULATION MATERIAL";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("INSULATION CEMENT")) {
 			str = "INSULATION CEMENT";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("ADHESIVE")) {
 			str = "ADHESIVE";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("MASTIC")) {
 			str = "MASTIC";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("SEALANT")) {
 			str = "SEALANT";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		else if(str.contains("FACTORY-APPLIED") || str.contains("FACTORY APPLIED")) {
 			str = "FACTORY APPLIED";
 			productQuery(str); 
-			return getBrandQuery(str);
+			//return getBrandQuery(str);
 		}
 		//else case for product data not stored in the database
 		else {
@@ -642,11 +661,11 @@ public class Database {
 			Vector<String> endStatement = new Vector<String>();
 			endStatement.add("The following does not have product data in the database: |" + str + "|");
 			  //System.out.println("The following does not have product data in the database: |" + str + "|");
-			  return endStatement;
+			  //return endStatement;
 		}
 		
+		
 	}
-	
 	//Function that will insert information to make a tuple into the Brand table
 	public static void insertBrandTuple(String Brand_Name,String Website,String Address) throws SQLException {
 		// variables for embedded sql
