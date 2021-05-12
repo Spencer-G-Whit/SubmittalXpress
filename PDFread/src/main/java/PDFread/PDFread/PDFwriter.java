@@ -21,7 +21,7 @@ public class PDFwriter {
 
 	// Private Members:
 	
-	private static PDDocument doc = new PDDocument();
+	//private static PDDocument doc = new PDDocument();
 	//, TOC, sectionTitle, submittal = new PDDocument();	
 	//PDPage page = new PDPage();
 	//coversheet.addPage( page );
@@ -43,6 +43,9 @@ public class PDFwriter {
 	
 	// Constructor
 	public PDFwriter(Vector<String> dbVec, Vector<String> subsecVec) throws IOException {
+		//Make sure we aren't pulling pri-ori files
+		File reset = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+		reset.delete();
 		
 		filePathFromDataBase.addAll(dbVec);
 		subsectionTitles.addAll(subsecVec);
@@ -75,12 +78,31 @@ public class PDFwriter {
 	
 	public void attachCutsheet(String path) throws IOException {
 		
-		PDFMergerUtility PDFmerger = new PDFMergerUtility();
-		PDFmerger.setDestinationFileName("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
-		File file = new File(path);
-		PDFmerger.addSource("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
-		PDFmerger.addSource(file);
-		PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		boolean pdfFile = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf").createNewFile();
+		if(!pdfFile) {
+			PDFMergerUtility PDFmerger = new PDFMergerUtility();
+			File file = new File(path);
+			
+			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
+			PDFmerger.addSource(file);
+			PDFmerger.setDestinationFileName("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+			PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+			
+//			File tempFile1 = new File("..\\\\PDFread\\\\src\\\\main\\\\output\\\\test_submittal1.pdf");
+//			File tempFile2 = new File("..\\\\PDFread\\\\src\\\\main\\\\output\\\\test_submittal.pdf");
+//			tempFile1.renameTo(tempFile2);
+		}
+		else {
+			PDFMergerUtility PDFmerger = new PDFMergerUtility();
+			PDFmerger.setDestinationFileName("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
+			File file = new File(path);
+			PDFmerger.addSource("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
+			PDFmerger.addSource(file);
+			PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		}
+		
+		
 		//doc.load(file);
 	}
 	
@@ -90,9 +112,11 @@ public class PDFwriter {
 	public void writeSectionTitle(String sectionTitle) throws IOException {
 //		File file = new File("..\\PDFread\\src\\main\\output\\test_submittal.pdf");
 //		doc = PDDocument.load(file);
-		if(doc.getNumberOfPages() > 0) {
-			doc.removePage(0);
-		}
+//		if(doc.getNumberOfPages() > 0) {
+//			doc.removePage(0);
+//		}
+		PDDocument doc = new PDDocument();
+		
 		// Call this method to parse our passed in string into a title and body
 		parseString(sectionTitle);
 		int fontSize = 16; // Or whatever font size you want.
@@ -127,6 +151,7 @@ public class PDFwriter {
             cont.endText();
         }
     doc.save("..\\PDFread\\src\\main\\output\\subsection_sheet.pdf");
+    doc.close();
 }
 	
 	// Method that parses out the subsection title into a section title and body description

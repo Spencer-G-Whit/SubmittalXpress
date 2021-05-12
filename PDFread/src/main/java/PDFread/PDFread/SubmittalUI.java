@@ -57,6 +57,7 @@ public class SubmittalUI extends Database {
 	private Vector<String> wholeSpec = new Vector<String>();
 	private Vector<Vector<String>> wholeBrandVec = new Vector<Vector<String>>();
 	private Vector<Vector<String>> wholeProductVec = new Vector<Vector<String>>();
+	private Vector<String> subSecTitles = new Vector<String>();
 	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
 	 
@@ -358,7 +359,7 @@ public class SubmittalUI extends Database {
 					if(PDFtest.specInfo.elementAt(j).contains(specSection.elementAt(i))) {
 						wholeBrandVec.add(Database.brandFilter(PDFtest.specInfo.elementAt(j)));
 						wholeProductVec.add(Database.productFilter(PDFtest.specInfo.elementAt(j)));
-						
+						subSecTitles.add(PDFtest.specInfo.elementAt(j));
 					}
 				}
 				
@@ -463,7 +464,9 @@ public class SubmittalUI extends Database {
 		            	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
 		            	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
 		            	//PDFwriter test = new PDFwriter(Database.getCutsheet(), vecTitle);
-						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
+		            	Vector<String> dbVec = new Vector<String>();
+		            	dbVec.addAll(Database.getCutsheet());
+						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), subSecTitles);
 						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
