@@ -378,7 +378,7 @@ public class SubmittalUI extends Database {
 				textPane.append(PDFtest.specInfo.elementAt(i) + "\n");
 				for(int j = 0; j < wholeBrandVec.elementAt(i).size(); j++) {
 					check = new JCheckBox();
-					//check.setText(wholeBrandVec.get(i).get(j) + " - " + wholeProductVec.get(i).get(j));
+					check.setText(wholeBrandVec.get(i).get(j) /*+ " - " + wholeProductVec.get(i).get(j)*/);
 					check.addActionListener(actionListener);
 					checkboxes.add(check);
 					panel.add(check);
@@ -458,7 +458,13 @@ public class SubmittalUI extends Database {
 	        	} if(specSection.size() != 0) {
 	        	
 		        	try {
-						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
+		        		Vector<String> vecTitle = new Vector<String>();
+		            	Vector<String> filePath = new Vector<String>();
+		            	vecTitle.add("220500  2.1 PIPE, TUBE, AND FITTINGS");
+		            	filePath.add("..\\PDFread\\src\\Product_data\\1.0 Mueller - Copper Tube for Plumbing and Mechanical Applications_2019.04.19.pdf");
+		            	PDFwriter test = new PDFwriter(filePath, vecTitle);
+						//PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
+						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
