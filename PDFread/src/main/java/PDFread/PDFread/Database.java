@@ -464,7 +464,7 @@ public class Database {
                     		+ s
                     		+ "%'");
  
-            System.out.println("Brand Information:\n");
+            System.out.println("Product Information:\n");
  
             // processing returned data and printing into console
             
@@ -607,8 +607,11 @@ public class Database {
 	public static Vector<String> productFilter(String str) {
 		str = str.toUpperCase();
 		return filter(str, false);
-		
-		
+	}
+	
+	public static Vector<String> brandFilter(String str) {
+		str = str.toUpperCase();
+		return filter(str, true);
 	}
 
 	public static Vector<String> filter(String str, Boolean b){

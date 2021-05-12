@@ -55,7 +55,8 @@ public class SubmittalUI extends Database {
 	//data containers
 	private Vector<String> specSection = new Vector<String>();
 	private Vector<String> wholeSpec = new Vector<String>();
-	private Vector<Vector<String>> wholeSpecVec = new Vector<Vector<String>>();
+	private Vector<Vector<String>> wholeBrandVec = new Vector<Vector<String>>();
+	private Vector<Vector<String>> wholeProductVec = new Vector<Vector<String>>();
 	
 	 ArrayList<JCheckBox> CheckboxList = new ArrayList<JCheckBox>();
 	 
@@ -350,30 +351,39 @@ public class SubmittalUI extends Database {
 			
 			//TODO set database text 
 			
-			// Double for loop to iterate through the wholeSpecVec double vector 
+			// Double for loop to iterate through the wholeBrandVec double vector 
 			// and store each returned vector from the database
 			for (int i = 0; i< specSection.size(); i++) {
 				for (int j = 0; j < PDFtest.specInfo.size(); j++) {
 					if(PDFtest.specInfo.elementAt(j).contains(specSection.elementAt(i))) {
-						wholeSpecVec.add(Database.productFilter(PDFtest.specInfo.elementAt(j)));
+						wholeBrandVec.add(Database.brandFilter(PDFtest.specInfo.elementAt(j)));
+						wholeProductVec.add(Database.productFilter(PDFtest.specInfo.elementAt(j)));
+						
 					}
 				}
+				
 			}
+			
+			for(int i = 0; i<wholeBrandVec.size(); i++) {
+				for(int j = 0; j < wholeBrandVec.elementAt(i).size(); j++) {
+					Database.cutSheetQuery(Database.getBrandID(wholeBrandVec.get(i).get(j)), Database.getProductID(wholeProductVec.get(i).get(j)));
+				}
+	  		}
 			
 			//wholeSpec.addAll(Database.productFilter(specSection.get(0)));
 			
-			// Double for loop to iterate through wholeSpecVec double vector
+			// Double for loop to iterate through wholeBrandVec double vector
 			// and append each element inside the vector of vectors
-			for(int i = 0; i < wholeSpecVec.size(); i++) {
+			for(int i = 0; i < wholeBrandVec.size(); i++) {
 				textPane.append(PDFtest.specInfo.elementAt(i) + "\n");
-				for(int j = 0; j < wholeSpecVec.elementAt(i).size(); j++) {
+				for(int j = 0; j < wholeBrandVec.elementAt(i).size(); j++) {
 					check = new JCheckBox();
-					check.setText(wholeSpecVec.get(i).toString());
+					//check.setText(wholeBrandVec.get(i).get(j) + " - " + wholeProductVec.get(i).get(j));
 					check.addActionListener(actionListener);
 					checkboxes.add(check);
 					panel.add(check);
-					textPane.append("     - " + wholeSpecVec.get(i).get(j) + "\n");
-					//textPane.append("\n");
+					textPane.append("     - " + wholeBrandVec.get(i).get(j) + " - " + wholeProductVec.get(i).get(j) + "\n");
+					textPane.append("\n");
 				}
 			}
 		}
@@ -438,15 +448,21 @@ public class SubmittalUI extends Database {
 	        	window.f.setVisible(false);
 	        	window.f.dispose();
 	        	DataBaseScreen();
-	        }else if(a.getSource() == next) {
+	        } else if(a.getSource() == next) {
 	        	specSection.clear();
 	        	for (int i = 0; i < checkboxes.size(); i++) {
-	        	if (checkboxes.get(i).isSelected() == true) {
-	        		 specSection.add(CheckboxList.get(i).getText());
-	        	}
+	        		if (checkboxes.get(i).isSelected() == true) {
+	        			specSection.add(CheckboxList.get(i).getText());
+	        		}
 	        	
-	        } if(specSection.size() != 0) {
+	        	} if(specSection.size() != 0) {
 	        	
+		        	try {
+						PDFwriter submittal = new PDFwriter(Database.getCutsheet(), PDFtest.specInfo);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				}
 	        	
 	        	
 	        }
