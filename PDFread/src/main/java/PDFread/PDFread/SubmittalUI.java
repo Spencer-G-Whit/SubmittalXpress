@@ -17,10 +17,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
@@ -28,6 +31,7 @@ import java.awt.FlowLayout;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class SubmittalUI extends Thread{
 	
@@ -36,7 +40,7 @@ public class SubmittalUI extends Thread{
 	private JFrame f;
 	private static JTextArea textArea;
 	///////////////////////
-	private JPanel checklistpanel;
+	private JPanel checklistpanel = new JPanel();
 	private JFrame frmSubmittalXpress;
 	private JTextField textField;
 	private JButton btnNewButton;
@@ -52,8 +56,11 @@ public class SubmittalUI extends Thread{
 	private JPanel scrn2;
 	private JPanel scrn3;
 	private JButton next;
-	private JTextArea textAreaLoading;
+	private JTextPane loadingText; 
 	private Boolean loading; 
+	JScrollPane scrollPane = new JScrollPane();
+	
+	
 	
 	//data containers
 	private Vector<String> specSection = new Vector<String>();
@@ -151,7 +158,7 @@ public class SubmittalUI extends Thread{
 		txtpnSubmittalxpress.setEditable(false);
 		txtpnSubmittalxpress.setBackground(Color.WHITE);
 		txtpnSubmittalxpress.setText("    SubmittalXPress");
-		txtpnSubmittalxpress.setFont(new Font("Sitka Small", Font.BOLD, 23));
+		txtpnSubmittalxpress.setFont(new Font("Tahoma", Font.BOLD, 23));
 	
 	    Continue = new JButton("Continue");
 		Continue.addActionListener(actionListener);
@@ -192,20 +199,21 @@ public class SubmittalUI extends Thread{
 		frmSubmittalXpress.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		
 	}
 	             
 	        	public void SecScreen() {
-	        		
-	        		checklistpanel = new JPanel();
 	        		f = new JFrame();
+	        		f.getContentPane().setBackground(new Color(176, 196, 222));
 	        		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        		f.setSize(660,500);
-	        		f.getContentPane().setLayout(null);
 	        		f.setLocationRelativeTo(null);
+	        		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	        	    f.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	        		f.setBounds(10, 10, 631, 650);
 	        		
 	        	    scrn2 = new JPanel();
-	        		scrn2.setBounds(10, 10, 631, 453);
+	        	    scrn2.setBackground(new Color(176, 196, 222));
+	        	    scrn2.setBounds(10, 10, 631, 650);
 	        		f.getContentPane().add(scrn2);
 	        		
 	        		JLabel lblNewLabel = new JLabel("");
@@ -213,50 +221,59 @@ public class SubmittalUI extends Thread{
 	        	    textArea = new JTextArea("");
 	        	    Font newFont = new Font("SansSerif", Font.PLAIN, 14);
 	        	    textArea.setFont(newFont);
+	        	    
+	        	    checklistpanel.setLayout(new BoxLayout(checklistpanel, BoxLayout.Y_AXIS));
+	        	    checklistpanel.setBorder(new EmptyBorder(10, 110, 10, 10));
+	        	    
+	        		scrollPane.setViewportView(checklistpanel);
+	        		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	        		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	        		
 	        	    appendSpec();
 	        	 
-	        		JLabel lblNewLabel_1 = new JLabel("Select Sections");
+	        		JLabel lblNewLabel_1 = new JLabel("    Select Sections");
+	        		lblNewLabel_1.setFont(new Font("Sylfaen", Font.PLAIN, 24));
 	        		
 	        	    Continue2 = new JButton("Continue");
+	        		
 	        		Continue2.addActionListener(actionListener);
 	        		
 	        		GroupLayout gl_panel = new GroupLayout(scrn2);
 	        		gl_panel.setHorizontalGroup(
-	        			gl_panel.createParallelGroup(Alignment.TRAILING)
+	        			gl_panel.createParallelGroup(Alignment.LEADING)
 	        				.addGroup(gl_panel.createSequentialGroup()
-	        					.addGap(74)
-	        					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
-	        					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+	        					.addContainerGap(440, Short.MAX_VALUE)
 	        					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-	        					.addGap(250))
-	        				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-	        					.addGap(39)
-	        					.addComponent(checklistpanel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-	        					.addPreferredGap(ComponentPlacement.UNRELATED)
-	        					.addGap(88)
+	        					.addGap(126))
+	        				.addGroup(gl_panel.createSequentialGroup()
+	        					.addContainerGap(250, Short.MAX_VALUE)
+	        					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
+	        					.addGap(241))
+	        				.addGroup(gl_panel.createSequentialGroup()
+	        					.addGap(211)
+	        					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE)
+	        					.addContainerGap(222, Short.MAX_VALUE))
+	        				.addGroup(gl_panel.createSequentialGroup()
+	        					.addGap(318)
 	        					.addComponent(Continue2)
-	        					.addContainerGap(92, Short.MAX_VALUE))
+	        					.addContainerGap(325, Short.MAX_VALUE))
 	        		);
 	        		gl_panel.setVerticalGroup(
 	        			gl_panel.createParallelGroup(Alignment.LEADING)
 	        				.addGroup(gl_panel.createSequentialGroup()
-	        					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-	        						.addGroup(gl_panel.createSequentialGroup()
-	        							.addGap(48)
-	        							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-	        								.addComponent(lblNewLabel)
-	        								.addComponent(lblNewLabel_1))
-	        							.addPreferredGap(ComponentPlacement.RELATED)
-	        							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-	        								.addComponent(checklistpanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-	        						.addGroup(gl_panel.createSequentialGroup()
-	        							.addGap(208)
-	        							.addComponent(Continue2)))
-	        					.addContainerGap(81, Short.MAX_VALUE))
-	        		)));
+	        					.addGap(41)
+	        					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+	        					.addPreferredGap(ComponentPlacement.RELATED)
+	        					.addComponent(lblNewLabel)
+	        					.addPreferredGap(ComponentPlacement.RELATED)
+	        					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE)
+	        					.addGap(18)
+	        					.addComponent(Continue2)
+	        					.addGap(129))
+	        		);
 	        		
-	        		checklistpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	        	
+	        		
 	        		scrn2.setLayout(gl_panel);
 	        		f.setVisible(true);
 	        	}
@@ -296,6 +313,7 @@ public class SubmittalUI extends Thread{
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
 			    JCheckBox check = new JCheckBox("");
 			    
@@ -404,6 +422,7 @@ public class SubmittalUI extends Thread{
 	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
 	        	
+	        	frmSubmittalXpress.setEnabled(false);
 	        	
 			     	 Thread thread = new Thread(new Runnable() {
 
@@ -415,9 +434,10 @@ public class SubmittalUI extends Thread{
 									    
 									    for(int i = 0; i < 15; i++) {
 										    
-											Thread.sleep(20);
+											 Thread.sleep(20);
 							     			 progressBar.setValue(i);
-							     			 progressBar.setString(i + "%");
+							     			
+							     			loadingText.setText(i+1 + "%");
 							     		}
 						       
 								     	PDFtest.checkSpecs();
@@ -426,7 +446,8 @@ public class SubmittalUI extends Thread{
 								    
 												Thread.sleep(20);
 								     			 progressBar.setValue(i);
-								     			 progressBar.setString(i + "%");
+								     			loadingText.setText(i + "%");
+								     			 
 								     		}
 								
 									// TODO Auto-generated catch block
@@ -442,7 +463,7 @@ public class SubmittalUI extends Thread{
 										    
 											Thread.sleep(20);
 							     			 progressBar.setValue(i);
-							     			 progressBar.setString(i + "%");
+							     			 loadingText.setText(i + "%");
 							     		}
 							
 									   
@@ -457,7 +478,7 @@ public class SubmittalUI extends Thread{
 										    
 											Thread.sleep(20);
 							     			 progressBar.setValue(i);
-							     			 progressBar.setString(i + "%");
+							     			 loadingText.setText(i + "%");
 							     	
 							     		}
 									     
@@ -468,14 +489,15 @@ public class SubmittalUI extends Thread{
 									    
 										Thread.sleep(20);
 						     			 progressBar.setValue(i);
-						     			 progressBar.setString(i + "%");
+						     			 loadingText.setText(i + "%");
 						     		}
-							
 						            
-						            SecScreen();
-						            
-						            frame.dispose();
-						        
+						            frmSubmittalXpress.setVisible(false);
+									frmSubmittalXpress.dispose();
+									frame.dispose();
+						           
+									SecScreen();
+						               
 						        } catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -502,9 +524,6 @@ public class SubmittalUI extends Thread{
      //**   System.out.print("================================================");
      //**  System.out.print("\nProgram finished running");
 					
-					
-					frmSubmittalXpress.setVisible(false);
-					frmSubmittalXpress.dispose();
 					LoadingScreen();
 					
 			      
@@ -562,32 +581,43 @@ public class SubmittalUI extends Thread{
 	  
 	        
   private void LoadingScreen() {
-	  frame = new JFrame();
-	  frame.setType(Type.UTILITY);
-	  frame.setTitle("Loading...");
+	    frame = new JFrame();
+	    frame.getContentPane().setBackground(new Color(119, 136, 153));
+	    frame.getContentPane().setForeground(SystemColor.controlShadow);
+	    frame.setType(Type.UTILITY);
+	    frame.setTitle("Loading...");
 		frame.setSize(640,93);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		frame.setAlwaysOnTop(true);
 		
 	    progressBar = new JProgressBar();
+		
+	    loadingText = new JTextPane();
+	    loadingText.setEditable(false);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(131)
+					.addGap(104)
+					.addComponent(loadingText, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(150, Short.MAX_VALUE))
+					.addContainerGap(122, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(18)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(loadingText, Alignment.LEADING)
+						.addComponent(progressBar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
 					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		
 		frame.getContentPane().setLayout(groupLayout);
-		frame.setVisible(true); 
+		
+		frame.setVisible(true);
 		progressBar.setVisible(true);
 		
 	     }
