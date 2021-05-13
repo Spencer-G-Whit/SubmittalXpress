@@ -51,6 +51,8 @@ public class SubmittalUI extends Database {
 	private JPanel scrn2;
 	private JPanel scrn3;
 	private JButton next;
+	private JTextArea textAreaLoading;
+	private Boolean loading; 
 	
 	//data containers
 	private Vector<String> specSection = new Vector<String>();
@@ -152,7 +154,8 @@ public class SubmittalUI extends Database {
 		Continue.addActionListener(actionListener);
 		
 	    progressBar = new JProgressBar();
-		progressBar.setValue(0);
+	    progressBar.setVisible(false);
+		progressBar.setValue(1);
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -194,6 +197,10 @@ public class SubmittalUI extends Database {
 		panel.setLayout(gl_panel);
 		frmSubmittalXpress.setBounds(500, 140, 631, 500);
 		frmSubmittalXpress.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		LoadingScreen();
+		frame.setVisible(false);
 	}
 	             
 	        	public void SecScreen() {
@@ -292,7 +299,7 @@ public class SubmittalUI extends Database {
 	               
 	  public void DataBaseScreen() {
 		  
-		  frame = new JFrame();
+		    frame = new JFrame();
 			frame.setSize(660,500);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
@@ -396,37 +403,46 @@ public class SubmittalUI extends Database {
 	        @Override
 	        
 	        public void actionPerformed(ActionEvent a) {
-	        
-	        	progressBar.setIndeterminate(true);
-				
+	       
 	        	
 			if(a.getSource() == btnNewButton) {
 	        	
 	        	openFile();
 	        	
+	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
+	        	
+	        	frame.setVisible(true);
+	        	frame.repaint();
 	        	
 					try {
 						
-						System.out.print("Starting PDF reader \n");
+					
+				//**		System.out.print("Starting PDF reader \n");
 				    	// LIST OF DIFFERENT SPECIFICATIONS TO TEST
 				    	//"C:\\Users\\msvetlichny23\\Desktop\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf"
 				    	//PDFreader PDFtest = new PDFreader("C:\\\\Users\\\\Michael\\\\Desktop\\\\SPECS\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf");
 				    	//PDFreader PDFtest = new PDFreader("C:\\Users\\Michael\\Desktop\\SPECS\\LILIA_30_CD_Spec_V4_UPDATED.pdf");
 				        PDFtest = new PDFreader(filePath);
+				        frame.repaint();
 				        PDFtest.checkSpecs();
+				        frame.repaint();
 		//		        System.out.print("Here are the specification sections we found in Division 22: \n");
      //				        PDFtest.printSpecs();
-				        System.out.print("================================================");
-				        System.out.print("\nHere are the corresponding page numbers: \n");
+				      //**    System.out.print("================================================");
+				      //**    System.out.print("\nHere are the corresponding page numbers: \n");
 				        PDFtest.printPages();
-				        System.out.print("================================================");
-				        System.out.print("\nHere are the sub sections in each spec section: \n");
+				        frame.repaint();
+				      //**   System.out.print("================================================");
+				      //**   System.out.print("\nHere are the sub sections in each spec section: \n");
 				        PDFtest.findProductData();
+				        frame.repaint();
 				        PDFtest.printSpecInfo();
+				        frame.repaint();
 				        //PDFtest.pageFinder();
-				        System.out.print("================================================");
-				        System.out.print("\nProgram finished running");
+				      //**   System.out.print("================================================");
+				      //**  System.out.print("\nProgram finished running");
+				        
 				        
 				    	window.frmSubmittalXpress.setVisible(false);
 				    	window.frmSubmittalXpress.dispose();
@@ -483,14 +499,64 @@ public class SubmittalUI extends Database {
 	        	
 	        	
 	        }
-	        	
-	        	
-	        	
+	        	  	
 	        }
-	        	
+		
 	        	}
+	         
+	        	
+	        
+	        
 	        };
 	  
+	        
+  private void LoadingScreen() {
+	    frame = new JFrame();
+		frame.setSize(660,500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		
+	     progressBar = new JProgressBar();
+		 loadingFunct();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(190)
+							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(88)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 460, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(98, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(71, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
+					.addGap(51)
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+					.addGap(120))
+		);
+		
+	    textAreaLoading = new JTextArea();
+		scrollPane.setViewportView(textAreaLoading);
+		frame.getContentPane().setLayout(groupLayout);
+		frame.setVisible(true); 
+		loadingFunct();
+	     }
+	        
+	        
+	        private void loadingFunct() {
+	        	
+	        	progressBar.setVisible(true);
+	        	progressBar.setIndeterminate(true);
+	        	
+	        }
 	        
 		  
 };
