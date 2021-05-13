@@ -27,6 +27,7 @@ import java.awt.SystemColor;
 import java.awt.FlowLayout;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 public class SubmittalUI extends Thread{
 	
@@ -45,8 +46,8 @@ public class SubmittalUI extends Thread{
 	private JFrame pop;
 	protected static SubmittalUI window = new SubmittalUI();
 	public PDFreader PDFtest;
-	private JProgressBar progressBar; 
 	private JButton Continue2;
+	private JProgressBar progressBar = new JProgressBar(); 
 	private JFrame dataScrn;
 	private JPanel scrn2;
 	private JPanel scrn3;
@@ -126,15 +127,15 @@ public class SubmittalUI extends Thread{
 	private void initialize() {
 		
 		frmSubmittalXpress = new JFrame();
-		frmSubmittalXpress.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frmSubmittalXpress.getContentPane().setEnabled(false);
+		frmSubmittalXpress.getContentPane().setBackground(SystemColor.activeCaption);
 		frmSubmittalXpress.setFont(new Font("MS PGothic", Font.BOLD, 16));
 		frmSubmittalXpress.setTitle("SubmittalXPress");
-		frmSubmittalXpress.setType(Type.NORMAL);
 		frmSubmittalXpress.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		frmSubmittalXpress.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBackground(SystemColor.activeCaption);
 		frmSubmittalXpress.getContentPane().add(panel);
 		
 	    btnNewButton = new JButton("Browse File...");
@@ -146,59 +147,49 @@ public class SubmittalUI extends Thread{
 		textField.setEditable(false);
 		
 		JTextPane txtpnSubmittalxpress = new JTextPane();
+		txtpnSubmittalxpress.setForeground(Color.BLACK);
 		txtpnSubmittalxpress.setEditable(false);
-		txtpnSubmittalxpress.setBackground(SystemColor.menu);
-		txtpnSubmittalxpress.setText("               SubmittalXPress");
-		txtpnSubmittalxpress.setFont(new Font("Rockwell", Font.PLAIN, 18));
+		txtpnSubmittalxpress.setBackground(Color.WHITE);
+		txtpnSubmittalxpress.setText("    SubmittalXPress");
+		txtpnSubmittalxpress.setFont(new Font("Sitka Small", Font.BOLD, 23));
 	
 	    Continue = new JButton("Continue");
 		Continue.addActionListener(actionListener);
 		
-	    progressBar = new JProgressBar();
-	    progressBar.setVisible(false);
-		progressBar.setValue(1);
-		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(139)
-							.addComponent(txtpnSubmittalxpress, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(165)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(258)
-							.addComponent(Continue))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(244)
-							.addComponent(btnNewButton))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(218)
-							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(152, Short.MAX_VALUE))
+					.addContainerGap(240, Short.MAX_VALUE)
+					.addComponent(btnNewButton)
+					.addGap(225))
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+					.addGap(160)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(txtpnSubmittalxpress, Alignment.TRAILING)
+						.addComponent(textField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+					.addContainerGap(143, Short.MAX_VALUE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(252, Short.MAX_VALUE)
+					.addComponent(Continue)
+					.addGap(235))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(50)
-					.addComponent(txtpnSubmittalxpress, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
+					.addGap(103)
+					.addComponent(txtpnSubmittalxpress, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(73)
 					.addComponent(btnNewButton)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(37)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(35)
+					.addGap(34)
 					.addComponent(Continue)
-					.addGap(18)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(310, Short.MAX_VALUE))
+					.addContainerGap(201, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
-		frmSubmittalXpress.setBounds(500, 140, 631, 500);
+		frmSubmittalXpress.setBounds(650, 140, 631, 650);
 		frmSubmittalXpress.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		
 		
 		
@@ -573,6 +564,7 @@ public class SubmittalUI extends Thread{
   private void LoadingScreen() {
 	  frame = new JFrame();
 	  frame.setType(Type.UTILITY);
+	  frame.setTitle("Loading...");
 		frame.setSize(640,93);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
