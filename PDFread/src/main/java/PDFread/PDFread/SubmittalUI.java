@@ -28,7 +28,7 @@ import java.awt.FlowLayout;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
-public class SubmittalUI extends Database {
+public class SubmittalUI extends Thread{
 	
 	//swing components
 	private JFrame frame;
@@ -70,6 +70,7 @@ public class SubmittalUI extends Database {
 	/**
 	 * Launch the application.
 	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -82,7 +83,7 @@ public class SubmittalUI extends Database {
 			}
 		});
 	}
-	
+
 	public void openFile() {
 //initialize jFilePicker		
 		boolean isPdf = true;
@@ -199,8 +200,8 @@ public class SubmittalUI extends Database {
 		frmSubmittalXpress.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		LoadingScreen();
-		frame.setVisible(false);
+		
+		
 	}
 	             
 	        	public void SecScreen() {
@@ -412,50 +413,109 @@ public class SubmittalUI extends Database {
 	        	
 	        }else if(a.getSource() == Continue && filePath != null) {
 	        	
-	        	frame.setVisible(true);
-	        	frame.repaint();
 	        	
-					try {
+			     	 Thread thread = new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+						        try {
+						        	    progressBar.setStringPainted(true);
+									    PDFtest = new PDFreader(filePath);
+									    
+									    for(int i = 0; i < 15; i++) {
+										    
+											Thread.sleep(20);
+							     			 progressBar.setValue(i);
+							     			 progressBar.setString(i + "%");
+							     		}
+						       
+								     	PDFtest.checkSpecs();
+								     	
+								     		for(int i = 15; i < 50; i++) {
+								    
+												Thread.sleep(20);
+								     			 progressBar.setValue(i);
+								     			 progressBar.setString(i + "%");
+								     		}
+								
+									// TODO Auto-generated catch block
 						
+						     
+//		        System.out.print("Here are the specification sections we found in Division 22: \n");
+    //				        PDFtest.printSpecs();
+						      //**    System.out.print("================================================");
+						      //**    System.out.print("\nHere are the corresponding page numbers: \n");
+									   PDFtest.printPages();
+									   
+									   for(int i = 50; i < 75; i++) {
+										    
+											Thread.sleep(20);
+							     			 progressBar.setValue(i);
+							     			 progressBar.setString(i + "%");
+							     		}
+							
+									   
+									   
+						     
+						      //**   System.out.print("================================================");
+						      //**   System.out.print("\nHere are the sub sections in each spec section: \n");
+						  
+									PDFtest.findProductData();
+								
+									  for(int i = 75; i < 85; i++) {
+										    
+											Thread.sleep(20);
+							     			 progressBar.setValue(i);
+							     			 progressBar.setString(i + "%");
+							     	
+							     		}
+									     
+									
+						            PDFtest.printSpecInfo();
+						            
+						            for(int i = 85; i < 100; i++) {
+									    
+										Thread.sleep(20);
+						     			 progressBar.setValue(i);
+						     			 progressBar.setString(i + "%");
+						     		}
+							
+						            
+						            SecScreen();
+						            
+						            frame.dispose();
+						        
+						        } catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+						        
+						   
+						}
+						
+					});
+					//**		System.out.print("Starting PDF reader \n");
+					// LIST OF DIFFERENT SPECIFICATIONS TO TEST
+					//"C:\\Users\\msvetlichny23\\Desktop\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf"
+					//PDFreader PDFtest = new PDFreader("C:\\\\Users\\\\Michael\\\\Desktop\\\\SPECS\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf");
+					//PDFreader PDFtest = new PDFreader("C:\\Users\\Michael\\Desktop\\SPECS\\LILIA_30_CD_Spec_V4_UPDATED.pdf");
 					
-				//**		System.out.print("Starting PDF reader \n");
-				    	// LIST OF DIFFERENT SPECIFICATIONS TO TEST
-				    	//"C:\\Users\\msvetlichny23\\Desktop\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf"
-				    	//PDFreader PDFtest = new PDFreader("C:\\\\Users\\\\Michael\\\\Desktop\\\\SPECS\\2018-10-29_WFXO6300_P-946_Final_Design_Spec_Book_Vol_2_of_3 (Div 3 to 22).pdf");
-				    	//PDFreader PDFtest = new PDFreader("C:\\Users\\Michael\\Desktop\\SPECS\\LILIA_30_CD_Spec_V4_UPDATED.pdf");
-				        PDFtest = new PDFreader(filePath);
-				        frame.repaint();
-				        PDFtest.checkSpecs();
-				        frame.repaint();
-		//		        System.out.print("Here are the specification sections we found in Division 22: \n");
-     //				        PDFtest.printSpecs();
-				      //**    System.out.print("================================================");
-				      //**    System.out.print("\nHere are the corresponding page numbers: \n");
-				        PDFtest.printPages();
-				        frame.repaint();
-				      //**   System.out.print("================================================");
-				      //**   System.out.print("\nHere are the sub sections in each spec section: \n");
-				        PDFtest.findProductData();
-				        frame.repaint();
-				        PDFtest.printSpecInfo();
-				        frame.repaint();
-				        //PDFtest.pageFinder();
-				      //**   System.out.print("================================================");
-				      //**  System.out.print("\nProgram finished running");
-				        
-				        
-				    	window.frmSubmittalXpress.setVisible(false);
-				    	window.frmSubmittalXpress.dispose();
-				    	
-				        SecScreen();
-				        
-				        //new SecScreen();
-				        //test = test.appendSpec();
-				        
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					thread.start();
+					
+					
+					
+					//PDFtest.pageFinder();
+     //**   System.out.print("================================================");
+     //**  System.out.print("\nProgram finished running");
+					
+					
+					frmSubmittalXpress.setVisible(false);
+					frmSubmittalXpress.dispose();
+					LoadingScreen();
+					
 			      
 	        } else if(a.getSource() == Continue2) {
 	        	//System.out.print("Im working");
@@ -511,52 +571,37 @@ public class SubmittalUI extends Database {
 	  
 	        
   private void LoadingScreen() {
-	    frame = new JFrame();
-		frame.setSize(660,500);
+	  frame = new JFrame();
+	  frame.setType(Type.UTILITY);
+		frame.setSize(640,93);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		
-	     progressBar = new JProgressBar();
-		 loadingFunct();
-		
-		JScrollPane scrollPane = new JScrollPane();
+	    progressBar = new JProgressBar();
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(190)
-							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(88)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 460, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(98, Short.MAX_VALUE))
+					.addGap(131)
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(150, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addContainerGap(71, Short.MAX_VALUE)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
-					.addGap(51)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addGap(18)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-					.addGap(120))
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		
-	    textAreaLoading = new JTextArea();
-		scrollPane.setViewportView(textAreaLoading);
 		frame.getContentPane().setLayout(groupLayout);
 		frame.setVisible(true); 
-		loadingFunct();
+		progressBar.setVisible(true);
+		
 	     }
 	        
 	        
-	        private void loadingFunct() {
-	        	
-	        	progressBar.setVisible(true);
-	        	progressBar.setIndeterminate(true);
-	        	
-	        }
+	     
 	        
 		  
 };
