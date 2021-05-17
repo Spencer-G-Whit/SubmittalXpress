@@ -303,7 +303,7 @@ public class SubmittalUI extends Thread {
 
   public void DataBaseScreen() {
 
-	    frame = new JFrame();
+	  frame = new JFrame();
 	    frame.getContentPane().setBackground(new Color(176, 196, 222));
 		frame.setSize(frame.getMaximumSize());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -314,7 +314,7 @@ public class SubmittalUI extends Thread {
 		    JCheckBox check = new JCheckBox("");
 		    
 		    next = new JButton("Create Submittal");
-			next.addActionListener(actionListener);
+			//next.addActionListener(actionListener);
 			
 			JLabel lblNewLabel = new JLabel("   Database Info");
 			lblNewLabel.setFont(new Font("Sylfaen", Font.PLAIN, 24));
@@ -325,43 +325,41 @@ public class SubmittalUI extends Thread {
 			scrollPane_1.setViewportView(textPane);
 			textPane.setEditable(false);
 			
-			JPanel panel = new JPanel();
+			JScrollPane scrollPane_2 = new JScrollPane();
 			GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 			groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING)
+				groupLayout.createParallelGroup(Alignment.LEADING)
 					.addGroup(groupLayout.createSequentialGroup()
-						.addGap(312)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(59)
-								.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 735, GroupLayout.PREFERRED_SIZE))
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(401)
-								.addComponent(next)))
-						.addGap(662))
-					.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-						.addGap(774)
+						.addGap(288)
+						.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+						.addGap(75)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 735, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(662, Short.MAX_VALUE))
+					.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addContainerGap(807, Short.MAX_VALUE)
+						.addComponent(next)
+						.addGap(624))
+					.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addContainerGap(764, Short.MAX_VALUE)
 						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(1054, Short.MAX_VALUE))
+						.addGap(611))
 			);
 			groupLayout.setVerticalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
-					.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 						.addGap(103)
 						.addComponent(lblNewLabel)
 						.addGap(18)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 561, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap())
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
-								.addGap(18)
-								.addComponent(next)
-								.addGap(126))))
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+							.addComponent(scrollPane_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+							.addComponent(scrollPane_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
+						.addGap(18)
+						.addComponent(next)
+						.addGap(126))
 			);
+			
+			JPanel panel = new JPanel();
+			scrollPane_2.setViewportView(panel);
 			frame.getContentPane().setLayout(groupLayout);
 
     //TODO set database text 
@@ -612,7 +610,7 @@ public class SubmittalUI extends Thread {
 
 	    frame.setVisible(true);
 	    progressBar.setVisible(true);
-
+	    
   }
 
 };
