@@ -48,7 +48,7 @@ public class SubmittalUI extends Thread {
   private JButton Continue;
   protected static String filePath;
   private JFileChooser jFilePick;
-  private JFrame pop;
+  private JFrame pop = new JFrame();
   protected static SubmittalUI window = new SubmittalUI();
   public PDFreader PDFtest;
   private JButton Continue2;
@@ -303,7 +303,7 @@ public class SubmittalUI extends Thread {
 
   public void DataBaseScreen() {
 
-	  frame = new JFrame();
+	    frame = new JFrame();
 	    frame.getContentPane().setBackground(new Color(176, 196, 222));
 		frame.setSize(frame.getMaximumSize());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -359,7 +359,10 @@ public class SubmittalUI extends Thread {
 			);
 			
 			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			scrollPane_2.setViewportView(panel);
+			
 			frame.getContentPane().setLayout(groupLayout);
 
     //TODO set database text 
@@ -523,6 +526,7 @@ public class SubmittalUI extends Thread {
         window.f.dispose();
         DataBaseScreen();
       } else if (a.getSource() == next) {
+  
         specSection.clear();
         //int count = 0;
         for (int i = 0; i < checkboxes.size(); i++) {
@@ -546,6 +550,9 @@ public class SubmittalUI extends Thread {
             //		            	Vector<String> dbVec = new Vector<String>();
             //		            	dbVec.addAll(Database.getCutsheet());
             PDFwriter submittal = new PDFwriter(writerCutSheetVec, specSection);
+//            pop.setVisible(true);
+//        	JOptionPane.setRootFrame(frame);
+//        	JOptionPane.showMessageDialog(pop, "PDF Submittal Generated!", "SubmittalXPress", JOptionPane.INFORMATION_MESSAGE);
             writerCutSheetVec.clear();
           } catch (IOException e) {
             // TODO Auto-generated catch block
