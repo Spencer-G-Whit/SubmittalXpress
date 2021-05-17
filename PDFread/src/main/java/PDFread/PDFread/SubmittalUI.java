@@ -303,7 +303,7 @@ public class SubmittalUI extends Thread {
 
   public void DataBaseScreen() {
 
-	  frame = new JFrame();
+	    frame = new JFrame();
 	    frame.getContentPane().setBackground(new Color(176, 196, 222));
 		frame.setSize(frame.getMaximumSize());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
